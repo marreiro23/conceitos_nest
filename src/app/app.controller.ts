@@ -1,12 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+// import { AppService } from './app.service';
 
-@Controller()
+@Controller('home')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  // constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('hello') // decorator que define um endpoint GET para a rota raiz ("/") -> ler -> CRUD
   getHello(): string {
-    return this.appService.getHello();
+    return 'Qualquer Coisa!';
+    // return this.appService.getHello();
+  }
+
+  @Get('exemplo')
+  exemplo(): string {
+    return 'Exemplo de Rota';
   }
 }
