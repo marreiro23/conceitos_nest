@@ -17,7 +17,7 @@
   },
   "workbench.localHistory.enabled": true, // configuração para habilitar o histórico local de arquivos, permitindo que você veja e restaure versões anteriores dos arquivos editados
   "workbench.fontAliasing": "antialiased", // configuração para melhorar a renderização das fontes no VS Code, tornando-as mais suaves e legíveis
-  "workbench.layoutControl.enabled": false, // configuração para desabilitar os controles de layout do VS Code, como a barra lateral e a barra de status, para uma interface mais limpa
+  "workbench.layoutControl.enabled": true, // configuração para desabilitar os controles de layout do VS Code, como a barra lateral e a barra de status, para uma interface mais limpa
   // Explorer
   "explorer.confirmDelete": true, // configuração para exibir uma confirmação ao excluir arquivos ou pastas no explorador de arquivos do VS Code
   "explorer.compactFolders": false, // configuração para desabilitar a compactação de pastas no explorador de arquivos do VS Code, exibindo cada pasta em uma linha separada

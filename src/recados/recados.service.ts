@@ -1,93 +1,76 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
+import { Recado } from './entities/recado.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RecadosService {
-  private lastId = 1;
-  private recados: Recado[] = [
-    {
-      id: 1,
-      texto: 'Recado 1',
-      de: 'João',
-      para: 'Maria',
-      lido: false,
-      data: new Date(),
-    },
-  ];
+  constructor(
+    @InjectRepository(Recado)
+    private readonly recadoRepository: Repository<Recado>,
+  ) {}
 
   throwNotFoundError() {
     throw new NotFoundException('Recado não encontrado');
     // Linha adicionada para lançar um erro intencionalmente, permitindo testar a integração com o Sentry, uma plataforma de monitoramento de erros e desempenho para aplicações. Ao lançar esse erro, podemos verificar se ele é capturado corretamente pelo Sentry e se as informações relevantes sobre o erro são registradas para análise posterior.
   }
 
-  findAll() {
-    return this.recados;
+  async findAll() {
+    const recados = await this.recadoRepository.find();
+    return recados;
   }
 
-  findOne(id: string) {
-    const recado = this.recados.find(item => item.id === +id); // O operador + é usado para converter a string id em um número, permitindo a comparação correta com o campo id dos recados, que é do tipo number
+  async findOne(id: number) {
+    // const recado = await this.recadoRepository.findOneBy({ id }); // O operador + é usado para converter a string id em um número, permitindo a comparação correta com o campo id dos recados, que é do tipo number
+    const recado = await this.recadoRepository.findOne({
+      where: {
+        id,
+      },
+    });
 
-    if (recado) {
-      return recado;
-    }
+    if (recado) return recado;
+
     this.throwNotFoundError();
   }
 
-  create(createRecadoDto: CreateRecadoDto) {
-    this.lastId++;
-    const id = this.lastId;
+  async create(createRecadoDto: CreateRecadoDto) {
     const novoRecado = {
-      id,
       ...createRecadoDto,
       lido: false,
       data: new Date(),
     };
 
-    this.recados.push(novoRecado);
+    const recado = this.recadoRepository.create(novoRecado);
 
-    return novoRecado;
+    return this.recadoRepository.save(recado);
   }
 
-  update(id: string, updateRecadoDto: UpdateRecadoDto) {
-    const recadoExistenteIndex = this.recados.findIndex(
-      item => item.id === +id,
-    );
-
-    if (recadoExistenteIndex < 0) {
-      this.throwNotFoundError();
-    }
-
-    const recadoExistente = this.recados[recadoExistenteIndex];
-
-    this.recados[recadoExistenteIndex] = {
-      ...recadoExistente,
-      ...updateRecadoDto,
+  async update(id: number, updateRecadoDto: UpdateRecadoDto) {
+    const partialUpdateRecadoDto = {
+      lido: updateRecadoDto?.lido,
+      texto: updateRecadoDto?.texto,
     };
-    return this.recados[recadoExistenteIndex];
-  }
 
-  remove(id: string) {
-    const recadoExistenteIndex = this.recados.findIndex(
-      item => item.id === +id,
-    );
+    const recado = await this.recadoRepository.preload({
+      id,
+      ...partialUpdateRecadoDto,
+    });
 
-    if (recadoExistenteIndex < 0) {
-      this.throwNotFoundError();
-    }
+    if (!recado) return this.throwNotFoundError();
 
-    const recado = this.recados[recadoExistenteIndex];
-
-    this.recados.splice(recadoExistenteIndex, 1);
+    await this.recadoRepository.save(recado);
     return recado;
   }
-}
 
-interface Recado {
-  id: number;
-  texto: string;
-  de: string;
-  para: string;
-  lido: boolean;
-  data: Date;
+  async remove(id: number) {
+    const recado = await this.recadoRepository.findOneBy({
+      id,
+    });
+
+    if (!recado) return this.throwNotFoundError();
+
+    return this.recadoRepository.remove(recado);
+  }
 }

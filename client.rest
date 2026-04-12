@@ -13,42 +13,30 @@ GET {{baseUrl}}/recados/
 
 
 ### lista apenas um recado
-GET {{baseUrl}}/recados/2/
+GET {{baseUrl}}/recados/4/
 
 ### cria um recado
 POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-  "texto": "Novo recado", 
+  "texto": "RECADO NOVO CRIADO NA BASE DE DADOS", 
   "de": "Luiz", 
-  "para": "Maria", 
-  "lido": false,
-  "data": "2026-01-01T00:00:00.000Z"
-}
+  "para": "Maria"
+  }
 
 
 ### atualiza um recado
-PATCH {{baseUrl}}/recados/2/
+PATCH {{baseUrl}}/recados/4/
 Content-Type: application/json
 
 {
-  "id": 2,
-  "texto": "RECADO ATUALIZADO",
-  "de": "Luiz",
-  "para": "Maria",
-  "lido": false,
-  "data": "2026-01-01T00:00:00.000Z"
-
+    "texto": "Rec liudo",
+    "lido": true
 }
 
-### @name RemoverRecado
-DELETE {{baseUrl}}/recados/2/
-Content-Type: application/json
-
-{
- "id": 2
-}
+### Apaga um recado
+DELETE {{baseUrl}}/recados/4/
 
 ### ExemploDeRota
 

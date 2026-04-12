@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
 import {
   Controller,
   Get,
@@ -11,52 +8,36 @@ import {
   HttpCode,
   HttpStatus,
   Delete,
-  Query,
+  ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { RecadosService } from './recados.service';
-import { Recado } from './entities/recado.entitie';
+import { Recado } from './entities/recado.entity';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 
-// CRUD
-// Create - POST -> CRIAR UM RECADO
-// Read - GET -> LER TODOS OS RECADOS
-// Read - GET -> LER UM RECADO ESPECÍFICO
-// Update - PUT - PATCH -> ATUALIZAR UM RECADO
-// Delete - DELETE -> DELETAR UM RECADO
-
-// PUT -> ATUALIZA TODOS OS DADOS DE UM RECADO
-// PATCH -> ATUALIZA APENAS ALGUNS DADOS DE UM RECADO
-
-// DTO -> Objeto de Transferência de Dados
-// DTO -> Objeto simples -> Validar dados -> transformar dados
-
-interface PaginationQuery {
-  limit?: number;
-  offset?: number;
-}
 // Interface para os parâmetros de paginação:
 // limit é o número máximo de itens a retornar
 // offset é o número de itens a pular antes de começar a retornar os resultados
 
 @Controller('recados') // Rota base para os recados, todas as rotas dentro deste controlador começarão com /recados
 export class RecadosController {
+  recadoRepository: any;
   constructor(private readonly recadosService: RecadosService) {} // Injeção de dependência do serviço de recados, permitindo que o controlador utilize os métodos definidos no serviço para manipular os recados
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  findAll(@Query() pagination: PaginationQuery): Recado[] {
-    const { limit = 10, offset = 0 } = pagination;
-    console.log(`Limit: ${limit}, Offset: ${offset}`);
-    // return `Essa rota encontra todos os recados, OK" Limite= ${limit} Offset= ${offset} User= ${user}`;
+  async findAll() {
     return this.recadosService.findAll();
   }
   // Encontrar um recado específico
   @Get(':id')
-  findOne(@Param('id') id: any): Recado | undefined {
-    console.log(id);
-    return this.recadosService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Recado[]> {
+    const recado = await this.recadosService.findOne(id);
+    if (recado) return [recado];
+    throw new NotFoundException('Recado não encontrado');
   }
+
   // Criar um recado
   @Post()
   create(@Body() createRecadoDto: CreateRecadoDto) {
@@ -66,18 +47,19 @@ export class RecadosController {
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateRecadoDto: UpdateRecadoDto,
-  ): Recado {
-    const recadoExistenteIndex = this.recadosService.update(
-      id,
-      updateRecadoDto,
-    );
-    return recadoExistenteIndex;
+  ) {
+    return this.recadosService.update(id, updateRecadoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.recadosService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<Recado[]> {
+    const recado = await this.recadosService.findOne(id);
+    if (!recado) {
+      throw new NotFoundException('Recado não encontrado');
+    }
+    await this.recadosService.remove(id);
+    return [recado];
   }
 }
