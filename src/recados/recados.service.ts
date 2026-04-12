@@ -4,6 +4,7 @@ import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { generateRandomString } from 'src/utils/generate-randon-strings';
 
 @Injectable()
 export class RecadosService {
@@ -36,8 +37,11 @@ export class RecadosService {
   }
 
   async create(createRecadoDto: CreateRecadoDto) {
+    const texto = createRecadoDto.texto?.trim();
+
     const novoRecado = {
       ...createRecadoDto,
+      texto: texto ? texto : generateRandomString(20), // Gerar um texto aleatório para o recado quando o campo texto não for enviado (ou vier vazio).
       lido: false,
       data: new Date(),
     };

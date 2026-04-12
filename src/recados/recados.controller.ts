@@ -12,9 +12,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { RecadosService } from './recados.service';
-import { Recado } from './entities/recado.entity';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
+import { Recado } from './entities/recado.entity';
 
 // Interface para os parâmetros de paginação:
 // limit é o número máximo de itens a retornar
@@ -32,7 +32,7 @@ export class RecadosController {
   }
   // Encontrar um recado específico
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Recado[]> {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     const recado = await this.recadosService.findOne(id);
     if (recado) return [recado];
     throw new NotFoundException('Recado não encontrado');

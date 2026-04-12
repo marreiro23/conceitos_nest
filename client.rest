@@ -13,30 +13,76 @@ GET {{baseUrl}}/recados/
 
 
 ### lista apenas um recado
-GET {{baseUrl}}/recados/4/
+GET {{baseUrl}}/recados/10/
 
 ### cria um recado
 POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-  "texto": "RECADO NOVO CRIADO NA BASE DE DADOS", 
+  "texto": "texto-temporario",
   "de": "Luiz", 
   "para": "Maria"
   }
 
-
-### atualiza um recado
-PATCH {{baseUrl}}/recados/4/
+### cria um recado (texto automático no backend)
+POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-    "texto": "Rec liudo",
-    "lido": true
+  "de": "Luiz",
+  "para": "Maria"
+}
+
+
+### atualiza um recado
+PATCH {{baseUrl}}/recados/14/
+Content-Type: application/json
+
+{
+    "texto": "aleluia, recado atualizado",
+    "lido": false
 }
 
 ### Apaga um recado
 DELETE {{baseUrl}}/recados/4/
+
+
+##############################
+
+# Pessoas
+
+### lista todos as pessoas
+GET {{baseUrl}}/pessoas/
+?limite=10
+&offset=0
+
+
+
+### lista apenas uma pessoa
+GET {{baseUrl}}/pessoas/1/
+
+### cria uma pessoa
+POST {{baseUrl}}/pessoas/
+
+Content-Type: application/json
+
+{
+  "email": "luizdfaola@example.com",
+  "password": "senhab123",
+  "nome": "Luiz aacfaallberto"
+}
+
+### cria uma pessoa (senha automática no backend)
+POST {{baseUrl}}/pessoas/
+Content-Type: application/json
+
+{
+  "email": "lcduizaaa@example.com",
+  "nome": "Luizxs aaaalberto",
+  "password": "senha123"
+}
+
 
 ### ExemploDeRota
 
@@ -54,4 +100,3 @@ GET {{baseUrl}}/conceitos-manual
 
 # @name ConceitosAutomaticoController
 GET {{baseUrl}}/conceitos-automatico
-
