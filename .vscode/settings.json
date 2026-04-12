@@ -1,37 +1,72 @@
 {
-  "window.zoomLevel": 1,
-  "breadcrumbs.enabled": false,
-  "editor.fontSize": 12,
-  "debug.console.fontSize": 12,
-  "terminal.integrated.fontSize": 12,
-  "editor.glyphMargin": false,
-  "editor.lineNumbers": "off",
-  "files.eol": "\n", // Final de linha sempre será LF
-  "workbench.editor.labelFormat": "short",
-  "editor.tabSize": 2,
-  "explorer.compactFolders": false,
-
-  // 🛠 Formatação e Lint
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-
+  "window.zoomLevel": 0, // configuração para aumentar o zoom da interface do VS Code
+  "editor.fontSize": 14, // configuração para aumentar o tamanho da fonte do editor
+  "terminal.integrated.fontSize": 14, // configuração para aumentar o tamanho da fonte do terminal integrado
+  "editor.suggestFontSize": 14, // configuração para aumentar o tamanho da fonte das sugestões de código
+  "debug.console.fontSize": 14, // configuração para aumentar o tamanho da fonte do console de depuração
+  "editor.minimap.enabled": true, // configuração para desabilitar o minimapa do editor
+  // Window
+  "workbench.startupEditor": "newUntitledFile", //  configuração para abrir um novo arquivo em branco ao iniciar o VS Code
+  "workbench.editor.labelFormat": "short", // configuração para exibir apenas o nome do arquivo na aba do editor, sem o caminho completo
+  "workbench.editor.enablePreview": false, // configuração para desabilitar a visualização prévia de arquivos ao clicar neles na barra lateral
+  "workbench.list.smoothScrolling": true, // configuração para habilitar a rolagem suave nas listas do VS Code, como a barra lateral e a lista de arquivos
+  "workbench.editor.enablePreviewFromQuickOpen": false, // configuração para desabilitar a visualização prévia de arquivos ao abrir arquivos usando a funcionalidade de abertura rápida (Quick Open)
+  "workbench.editorAssociations": {
+    // configuração para associar arquivos com a extensão .ipynb ao editor de notebooks do Jupyter
+    "*.ipynb": "jupyter-notebook"
+  },
+  "workbench.localHistory.enabled": true, // configuração para habilitar o histórico local de arquivos, permitindo que você veja e restaure versões anteriores dos arquivos editados
+  "workbench.fontAliasing": "antialiased", // configuração para melhorar a renderização das fontes no VS Code, tornando-as mais suaves e legíveis
+  "workbench.layoutControl.enabled": false, // configuração para desabilitar os controles de layout do VS Code, como a barra lateral e a barra de status, para uma interface mais limpa
+  // Explorer
+  "explorer.confirmDelete": true, // configuração para exibir uma confirmação ao excluir arquivos ou pastas no explorador de arquivos do VS Code
+  "explorer.compactFolders": false, // configuração para desabilitar a compactação de pastas no explorador de arquivos do VS Code, exibindo cada pasta em uma linha separada
+  // Editor and breadcrumbs
+  "breadcrumbs.enabled": true, // configuração para habilitar a exibição de breadcrumbs (trilha de navegação) no editor do VS Code, mostrando o caminho hierárquico dos arquivos abertos
+  "editor.largeFileOptimizations": true, // configuração para habilitar otimizações para arquivos grandes, melhorando o desempenho ao abrir e editar arquivos com um grande número de linhas
+  "editor.renderControlCharacters": true, // configuração para exibir caracteres de controle, como tabulações e quebras de linha, no editor do VS Code
+  "editor.tabSize": 2, // configuração para definir o tamanho da tabulação como 2 espaços no editor do VS Code
+  "editor.renderLineHighlight": "gutter", // configuração para destacar a linha atual apenas na margem do editor, em vez de destacar toda a linha
+  "editor.rulers": [79, 120], // configuração para exibir guias verticais no editor do VS Code, indicando os limites de 79 e 120 caracteres por linha, ajudando a manter o código dentro de um comprimento recomendado
+  "editor.detectIndentation": true, // configuração para detectar automaticamente a indentação do arquivo aberto
+  "editor.snippetSuggestions": "bottom", // configuração para exibir sugestões de snippets na parte inferior da lista de sugestões
+  "editor.wordBasedSuggestions": "off", // configuração para desabilitar sugestões baseadas em palavras existentes no arquivo
+  "editor.suggest.localityBonus": false, // configuração para desabilitar o bônus de localidade nas sugestões de código
+  "editor.acceptSuggestionOnCommitCharacter": false, // configuração para desabilitar a aceitação automática de sugestões ao digitar caracteres de commit
+  "editor.suggestSelection": "first", // configuração para selecionar a primeira sugestão de código por padrão, em vez de tentar adivinhar a melhor correspondência com base no que foi digitado
+  "editor.suggest.showValues": true,
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "off",
+    "strings": "off"
+  }, // configuração para habilitar sugestões de código rápidas apenas para código, desabilitando-as para comentários e strings, tornando as sugestões mais relevantes ao digitar código
+  "editor.quickSuggestionsDelay": 1, // configuração para reduzir o atraso antes de exibir sugestões de código rápidas, tornando as sugestões mais responsivas ao digitar
+  "editor.suggestOnTriggerCharacters": false, // configuração para desabilitar a exibição automática de sugestões de código ao digitar caracteres que normalmente acionariam sugestões, como pontos ou parênteses
+  "editor.parameterHints.enabled": false, // configuração para desabilitar as dicas de parâmetros, que exibem informações sobre os parâmetros esperados ao chamar uma função ou método
+  "editor.formatOnPaste": false, // configuração para desabilitar a formatação automática ao colar código no editor do VS Code, permitindo que o código seja colado sem alterações de formatação
+  "editor.cursorSmoothCaretAnimation": "on", // configuração para habilitar animação suave do cursor, tornando a movimentação do cursor mais fluida e visualmente agradável
+  "editor.mouseWheelScrollSensitivity": 1, // configuração para definir a sensibilidade da rolagem do mouse, ajustando a velocidade de rolagem ao usar a roda do mouse
+  "editor.fastScrollSensitivity": 4, // configuração para definir a sensibilidade de rolagem rápida, aumentando a velocidade de rolagem ao segurar a tecla Shift enquanto usa a roda do mouse
+  "editor.smoothScrolling": true, // configuração para habilitar a rolagem suave no editor do VS Code, tornando a rolagem mais fluida e visualmente agradável
+  "editor.mouseWheelZoom": true, // configuração para habilitar o zoom usando a roda do mouse, permitindo aumentar ou diminuir o zoom do editor ao segurar a tecla Ctrl (ou Cmd no macOS) enquanto usa a roda do mouse
+  "editor.fontLigatures": true, // configuração para habilitar ligaduras de fonte, que são combinações de caracteres que se unem para criar uma aparência mais fluida e estética, especialmente útil para programadores que usam fontes com suporte a ligaduras, como Fira Code ou Cascadia Code
+  "editor.formatOnSave": true, // configuração para habilitar a formatação automática do código ao salvar um arquivo, garantindo que o código esteja sempre formatado de acordo com as regras definidas pelo formatter configurado
+  "editor.linkedEditing": true, // configuração para habilitar a edição vinculada, que permite editar simultaneamente todas as ocorrências de um elemento, como uma tag HTML ou uma variável, facilitando a refatoração e a edição de código
+  "editor.multiCursorModifier": "ctrlCmd", // configuração para definir a tecla modificadora para adicionar cursores múltiplos como Ctrl (ou Cmd no macOS), permitindo que você adicione cursores adicionais ao clicar com o mouse ou usar atalhos de teclado
+  "editor.accessibilitySupport": "off", // configuração para desabilitar o suporte de acessibilidade, que pode melhorar o desempenho do editor em sistemas onde os recursos de acessibilidade não são necessários
+  "editor.renderWhitespace": "all", // configuração para exibir todos os espaços em branco, incluindo espaços, tabulações e quebras de linha, facilitando a visualização da formatação do código
+  "editor.glyphMargin": true, // configuração para habilitar a margem de glifos, que permite exibir ícones e indicadores ao lado do código, como pontos de interrupção e marcadores de alterações
+  "editor.inlineSuggest.enabled": true, // configuração para habilitar sugestões inline, que exibem sugestões de código diretamente no editor enquanto você digita
+  // Git
+  "git.enableSmartCommit": true, // configuração para habilitar o recurso de commit inteligente, que permite fazer commits diretamente do VS Code sem precisar abrir a linha de comando, facilitando o processo de versionamento do código
+  "git.openRepositoryInParentFolders": "never",
+  "diffEditor.ignoreTrimWhitespace": true, // configuração para ignorar espaços em branco no editor de diferenças, facilitando a visualização das mudanças reais no código sem ser distraído por alterações de formatação
+  // Eslint and fix on save
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    // configuração para executar ações de código específicas ao salvar um arquivo, neste caso, para corrigir automaticamente os problemas detectados pelo ESLint
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll": "explicit"
   },
-
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[xml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[svg]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "files.eol": "\n",
+  "js/ts.tsdk.path": "node_modules\\typescript\\lib"
 }
