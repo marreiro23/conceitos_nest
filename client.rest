@@ -6,9 +6,9 @@ POST {{baseUrl}}/pessoas
 Content-Type: application/json
 
 {
-  "nome": "João Silva Oliveira",
-  "email": "joaoOliveira@example.com",
-  "passwordHash": "hashe]]d_password_123"
+  "nome": "Leo Aquila",
+  "email": "leo.aquila@example.com",
+  "passwordHash": "hashed_password_123"
 }
 
 ### Listar todas as pessoas
@@ -18,7 +18,7 @@ GET {{baseUrl}}/pessoas
 GET {{baseUrl}}/pessoas/6
 
 ### Atualizar uma pessoa
-PATCH {{baseUrl}}/pessoas/5
+PATCH {{baseUrl}}/pessoas/3
 Content-Type: application/json
 
 {
@@ -43,16 +43,16 @@ GET {{baseUrl}}/recados/
 
 
 ### lista apenas um recado
-GET {{baseUrl}}/recados/10/
+GET {{baseUrl}}/recados/15/
 
 ### cria um recado
 POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-  "texto": "textoss-temporario",
-  "de": "Luissz", 
-  "para": "Mssaria"
+"deId": 17,
+"paraId": 16,
+"texto": "Recado de teste deId 16'joana' paraId 17'leo'"
   }
 
 ### cria um recado (texto automático no backend)
@@ -60,18 +60,19 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-  "de": "Luiz",
-  "para": "Maria"
+"texto": "Recado automático",
+"deId": 16,
+"paraId": 4
 }
 
 
 ### atualiza um recado
-PATCH {{baseUrl}}/recados/1/
+PATCH {{baseUrl}}/recados/5/
 Content-Type: application/json
 
 {
-    "texto": "aleluia, recado atualizado",
-    "lido": false
+    "texto": "atualizado",
+    "lido": true
 }
 
 ### Apaga um recado

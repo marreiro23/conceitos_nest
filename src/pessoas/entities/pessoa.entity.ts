@@ -1,7 +1,9 @@
+import { Recado } from 'src/recados/entities/recado.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -34,4 +36,14 @@ export class Pessoa {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt?: Date;
+
+  // Uma pessoa pode enviar muitos recados (como "de").
+  // Esses recados sao relacionados ao campo "de" da entidade Recado.
+  @OneToMany(() => Recado, recado => recado.de)
+  recadosEnviados: Recado[];
+
+  // Uma pessoa pode receber muitos recados (como "para").
+  // Esses recados sao relacionados ao campo "para" da entidade Recado.
+  @OneToMany(() => Recado, recado => recado.para)
+  recadosRecebidos: Recado[];
 }

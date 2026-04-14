@@ -3,13 +3,15 @@ import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { generateRandomString } from 'src/utils/generate-randon-strings';
+import { PessoasService } from 'src/pessoas/pessoas.service';
+import { CreateRecadoDto } from './dto/create-recado.dto';
 
 @Injectable()
 export class RecadosService {
   constructor(
     @InjectRepository(Recado)
     private readonly recadoRepository: Repository<Recado>,
+    private readonly pessoasService: PessoasService,
   ) {}
 
   throwNotFoundError() {
@@ -18,7 +20,23 @@ export class RecadosService {
   }
 
   async findAll() {
-    const recados = await this.recadoRepository.find();
+    const recados = await this.recadoRepository.find({
+      relations: ['de', 'para'],
+      order: {
+        id: 'desc',
+      },
+      select: {
+        de: {
+          id: true,
+          nome: true,
+        },
+        para: {
+          id: true,
+          nome: true,
+        },
+      },
+    });
+
     return recados;
   }
 
@@ -28,6 +46,20 @@ export class RecadosService {
       where: {
         id,
       },
+      relations: ['de', 'para'],
+      order: {
+        id: 'desc',
+      },
+      select: {
+        de: {
+          id: true,
+          nome: true,
+        },
+        para: {
+          id: true,
+          nome: true,
+        },
+      },
     });
 
     if (recado) return recado;
@@ -35,27 +67,38 @@ export class RecadosService {
     this.throwNotFoundError();
   }
 
-  async create(createRecadoDto: UpdateRecadoDto) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    const texto = createRecadoDto.texto?.trim();
+  async create(createRecadoDto: CreateRecadoDto) {
+    const { deId, paraId } = createRecadoDto;
+    //Encontrar a pessoa que esta enviando o recado.
+    const de = await this.pessoasService.findOne(deId);
+    // Encontrar a pessoa que esta recebendo o recado.
+    const para = await this.pessoasService.findOne(paraId);
 
     const novoRecado = {
-      ...createRecadoDto,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      texto: texto ? texto : generateRandomString(20), // Gerar um texto aleatório para o recado quando o campo texto não for enviado (ou vier vazio).
+      texto: createRecadoDto.texto,
+      de,
+      para,
       lido: false,
       data: new Date(),
     };
 
     const recado = this.recadoRepository.create(novoRecado);
+    await this.recadoRepository.save(recado);
 
-    return this.recadoRepository.save(recado);
+    return {
+      ...recado,
+      de: {
+        id: recado.de.id,
+      },
+      para: {
+        id: recado.para.id,
+      },
+    };
   }
 
   async update(id: number, updateRecadoDto: UpdateRecadoDto) {
     const partialUpdateRecadoDto = {
       lido: updateRecadoDto?.lido,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       texto: updateRecadoDto?.texto,
     };
 
