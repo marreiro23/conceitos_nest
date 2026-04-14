@@ -8,7 +8,7 @@
   // Window
   "workbench.startupEditor": "newUntitledFile", //  configuração para abrir um novo arquivo em branco ao iniciar o VS Code
   "workbench.editor.labelFormat": "short", // configuração para exibir apenas o nome do arquivo na aba do editor, sem o caminho completo
-  "workbench.editor.enablePreview": false, // configuração para desabilitar a visualização prévia de arquivos ao clicar neles na barra lateral
+  "workbench.editor.enablePreview": true, // configuração para desabilitar a visualização prévia de arquivos ao clicar neles na barra lateral
   "workbench.list.smoothScrolling": true, // configuração para habilitar a rolagem suave nas listas do VS Code, como a barra lateral e a lista de arquivos
   "workbench.editor.enablePreviewFromQuickOpen": false, // configuração para desabilitar a visualização prévia de arquivos ao abrir arquivos usando a funcionalidade de abertura rápida (Quick Open)
   "workbench.editorAssociations": {

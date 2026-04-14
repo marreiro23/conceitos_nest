@@ -1,28 +1,17 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
-import { Unique } from 'typeorm';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreatePessoaDto {
-  @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
+  @IsString()
   @MinLength(3)
-  readonly nome: string;
+  nome: string;
 
-  @IsString()
-  @IsEmail()
-  @Unique(['email'])
-  readonly email: string;
-
-  @IsString()
   @IsNotEmpty()
-  @MinLength(5)
-  readonly passwordHash: string;
-  readonly nPessoa: string;
-  readonly nPassword: string;
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  passwordHash: string;
 }

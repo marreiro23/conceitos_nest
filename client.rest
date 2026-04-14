@@ -1,5 +1,35 @@
 @baseUrl = http://localhost:3000
 
+# PESSOAS
+### Criar uma pessoa
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "nome": "João Silva Oliveira",
+  "email": "joaoOliveira@example.com",
+  "passwordHash": "hashe]]d_password_123"
+}
+
+### Listar todas as pessoas
+GET {{baseUrl}}/pessoas
+
+### Buscar uma pessoa por ID
+GET {{baseUrl}}/pessoas/6
+
+### Atualizar uma pessoa
+PATCH {{baseUrl}}/pessoas/5
+Content-Type: application/json
+
+{
+  "nome": "Joãcffos Silva Atualizado",
+  "email": "joaoffs.novo@exasmple.com"
+}
+
+### Deletar uma pessoa
+DELETE {{baseUrl}}/pessoas/5
+
+
 # RECADOS
 ### RecadosController
 
@@ -7,7 +37,7 @@
 
 ### lista todos os recados
 GET {{baseUrl}}/recados/
-?limite=10
+?limit=10
 &offset=10
 # &user=luiz
 
@@ -20,9 +50,9 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-  "texto": "texto-temporario",
-  "de": "Luiz", 
-  "para": "Maria"
+  "texto": "textoss-temporario",
+  "de": "Luissz", 
+  "para": "Mssaria"
   }
 
 ### cria um recado (texto automático no backend)
@@ -36,7 +66,7 @@ Content-Type: application/json
 
 
 ### atualiza um recado
-PATCH {{baseUrl}}/recados/14/
+PATCH {{baseUrl}}/recados/1/
 Content-Type: application/json
 
 {
@@ -45,58 +75,58 @@ Content-Type: application/json
 }
 
 ### Apaga um recado
-DELETE {{baseUrl}}/recados/4/
+DELETE {{baseUrl}}/recados/1/
+
 
 
 ##############################
 
 # Pessoas
 
-### lista todos as pessoas
-GET {{baseUrl}}/pessoas/
-?limite=10
-&offset=0
+# Pessoas
+### PessoasController
 
+# @name PessoasController
+
+### lista todas as pessoas
+GET {{baseUrl}}/pessoas/
+?limit=10
+&offset=10
+# &user=luiz
 
 
 ### lista apenas uma pessoa
-GET {{baseUrl}}/pessoas/1/
+GET {{baseUrl}}/pessoas/5/
 
 ### cria uma pessoa
 POST {{baseUrl}}/pessoas/
-
 Content-Type: application/json
 
 {
-  "email": "luizdfaola@example.com",
-  "password": "senhab123",
-  "nome": "Luiz aacfaallberto"
+  "nome": "Luiedswwz",
+  "email": "luizwew@example.ceom",
+  "passwordHash": "1e234www56"
 }
-
 ### cria uma pessoa (senha automática no backend)
 POST {{baseUrl}}/pessoas/
 Content-Type: application/json
 
 {
-  "email": "lcduizaaa@example.com",
-  "nome": "Luizxs aaaalberto",
-  "password": "senha123"
+  "nome": "Luiz dAlberto",
+  "email": "ludiz.alberto@example.com",
+  "passwordHash": "123d4www56"
 }
 
 
-### ExemploDeRota
+### atualiza uma pessoa
+PATCH {{baseUrl}}/pessoas/9/
+Content-Type: application/json
 
-# @name ExemploDeRota
-GET {{baseUrl}}/home/exemplo
+{
+    "nome": "Luiz eAlbderto",
+    "email": "luiezd.albeerto@eexamdple.coem"
+}
 
+### Apaga uma pessoa
+DELETE {{baseUrl}}/pessoas/9/
 
-### ConceitosManualController
-
-# @name ConceitosManualControllerHome
-GET {{baseUrl}}/conceitos-manual
-
-
-### ConceitosAutomaticoController
-
-# @name ConceitosAutomaticoController
-GET {{baseUrl}}/conceitos-automatico

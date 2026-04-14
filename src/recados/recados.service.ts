@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -36,11 +35,13 @@ export class RecadosService {
     this.throwNotFoundError();
   }
 
-  async create(createRecadoDto: CreateRecadoDto) {
+  async create(createRecadoDto: UpdateRecadoDto) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const texto = createRecadoDto.texto?.trim();
 
     const novoRecado = {
       ...createRecadoDto,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       texto: texto ? texto : generateRandomString(20), // Gerar um texto aleatório para o recado quando o campo texto não for enviado (ou vier vazio).
       lido: false,
       data: new Date(),
@@ -54,6 +55,7 @@ export class RecadosService {
   async update(id: number, updateRecadoDto: UpdateRecadoDto) {
     const partialUpdateRecadoDto = {
       lido: updateRecadoDto?.lido,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       texto: updateRecadoDto?.texto,
     };
 

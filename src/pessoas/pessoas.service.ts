@@ -4,7 +4,6 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Pessoa } from './entities/pessoa.entity';
-import { generateRandomString } from 'src/utils/generate-randon-strings';
 
 @Injectable()
 export class PessoasService {
@@ -13,9 +12,14 @@ export class PessoasService {
     private readonly pessoasRepository: Repository<Pessoa>,
   ) {}
 
-  throwNotFoundError() {
-    throw new NotFoundException('Pessoa não encontrada');
-    // Linha adicionada para lançar um erro intencionalmente, permitindo testar a integração com o Sentry, uma plataforma de monitoramento de erros e desempenho para aplicações. Ao lançar esse erro, podemos verificar se ele é capturado corretamente pelo Sentry e se as informações relevantes sobre o erro são registradas para análise posterior.
+  async create(createPessoaDto: CreatePessoaDto) {
+    const pessoa = this.pessoasRepository.create({
+      nome: createPessoaDto.nome,
+      email: createPessoaDto.email,
+      passwordHash: createPessoaDto.passwordHash,
+    });
+
+    return this.pessoasRepository.save(pessoa);
   }
 
   async findAll() {
@@ -32,42 +36,20 @@ export class PessoasService {
 
     if (pessoa) return pessoa;
 
-    this.throwNotFoundError();
-  }
-
-  async create(createPessoaDto: CreatePessoaDto) {
-    const nPessoa = createPessoaDto.nPessoa?.trim();
-
-    const nPassword = createPessoaDto.nPassword?.trim();
-
-    const novaPessoa = {
-      ...createPessoaDto,
-      nPessoa: nPessoa ? nPessoa : generateRandomString(10), // Gerar um nome aleatório para a pessoa quando o campo nome não for enviado (ou vier vazio).
-
-      nPassword: nPassword ? nPassword : generateRandomString(5), // O campo passwordHash é preenchido com o valor do campo password do DTO, que é a senha em texto plano. No entanto, é importante ressaltar que armazenar senhas em texto plano não é seguro. Em um ambiente de produção, é recomendado utilizar uma função de hash para proteger as senhas antes de armazená-las no banco de dados.
-      email: createPessoaDto.email,
-    };
-
-    const pessoa = this.pessoasRepository.create(novaPessoa);
-
-    return this.pessoasRepository.save(pessoa);
+    throw new NotFoundException(`Pessoa with ID ${id} not found`);
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    const partialUpdatePessoaDto = {
-      nome: updatePessoaDto?.nome,
-      email: updatePessoaDto?.email,
-      password: updatePessoaDto?.passwordHash,
-    };
-
     const pessoa = await this.pessoasRepository.preload({
       id,
-      ...partialUpdatePessoaDto,
+      ...updatePessoaDto,
     });
 
-    if (!pessoa) return this.throwNotFoundError();
+    if (!pessoa) {
+      throw new NotFoundException(`Pessoa com ID ${id} não encontrada`);
+    }
 
-    return pessoa;
+    return this.pessoasRepository.save(pessoa);
   }
 
   async remove(id: number) {
@@ -75,7 +57,7 @@ export class PessoasService {
       id,
     });
 
-    if (!pessoa) return this.throwNotFoundError();
+    if (!pessoa) throw new NotFoundException(`Pessoa with ID ${id} not found`);
 
     return this.pessoasRepository.remove(pessoa);
   }
