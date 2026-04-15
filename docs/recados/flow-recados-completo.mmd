@@ -19,9 +19,9 @@ flowchart TB
   end
 
   subgraph Controller
-    CR[RecadosController]
-    RFindAll[GET findAll Query pagination]
-    RFindOne[GET id ParseIntPipe]
+    CR[RecadosController UseInterceptors ChangeDataInterceptor class-level]
+    RFindAll[GET findAll Query pagination HttpCode 200]
+    RFindOne[GET id - ParseIntIdPipe via useGlobalPipes main.ts]
     RCreate[POST create]
     RUpdate[PATCH update]
     RRemove[DELETE remove]

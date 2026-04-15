@@ -21,12 +21,13 @@ export class RecadosService {
   }
 
   async findAll(paginationDto: PaginationDto) {
+    // console.log('RecadosService Executado - findAll'); // Log para depuração, mostrando os parâmetros de paginação recebidos
     const { limit = 10, offset = 0 } = paginationDto;
 
     const recados = await this.recadoRepository.find({
       take: limit, // quantos registros serão exibidos por pagina.
       skip: offset, // quantos registros serão pulados para chegar na página desejada.
-      // relations: ['de', 'para'],
+      relations: ['de', 'para'],
       order: {
         id: 'desc',
       },
@@ -46,6 +47,7 @@ export class RecadosService {
   }
 
   async findOne(id: number) {
+    // console.log('RecadosService Executado - findOne'); // Log para depuração, mostrando o ID recebido
     // const recado = await this.recadoRepository.findOneBy({ id }); // O operador + é usado para converter a string id em um número, permitindo a comparação correta com o campo id dos recados, que é do tipo number
     const recado = await this.recadoRepository.findOne({
       where: {

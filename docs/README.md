@@ -61,4 +61,5 @@ Regras:
 
 ## Última atualização
 
-2026-04-14 (índice completo + migração controlada do legado)
+2026-04-14 (índice completo + migração controlada do legado; auditoria rodada 2
+aplicada: `flow-app-completo.mmd` e `flow-recados-completo.mmd` corrigidos)

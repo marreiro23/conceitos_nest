@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ### Deletar uma pessoa
-DELETE {{baseUrl}}/pessoas/16
+DELETE {{baseUrl}}/pessoas/19
 
 ### Deletar todas as pessoas
 DELETE {{baseUrl}}/pessoas/
@@ -40,20 +40,21 @@ DELETE {{baseUrl}}/pessoas/
 
 ### lista todos os recados
 GET {{baseUrl}}/recados/
-?limit=2
+?limit=10
 &offset=0
+Authorization: Bearer 123456
 
 ### lista apenas um recado
-GET {{baseUrl}}/recados/15/
+GET {{baseUrl}}/recados/76/
 
 ### cria um recado
 POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-"deId": 19,
-"paraId": 18,
-"texto": "deId 19 'Joana' paraId 18'Leo'"
+"deId": 18,
+"paraId": 20,
+"texto": "deId 18 'Joana' paraId 20'Leo'"
   }
 
 ### cria um recado (texto automático no backend)
@@ -62,8 +63,8 @@ Content-Type: application/json
 
 {
 "texto": "Recado automático",
-"deId": 16,
-"paraId": 4
+"deId": 20,
+"paraId": 18
 }
 
 
@@ -72,12 +73,12 @@ PATCH {{baseUrl}}/recados/36/
 Content-Type: application/json
 
 {
-    "texto": "De Joana para Leo: Recado atualizado",
+    "texto": "De Joanajkgb para Leo: Recado atualizado",
     "lido": true
 }
 
 ### Apaga um recado
-DELETE {{baseUrl}}/recados/71/
+DELETE {{baseUrl}}/recados/-7/
 
 
 ### Apaga todos os recados
@@ -102,15 +103,14 @@ GET {{baseUrl}}/pessoas/
 
 
 ### lista apenas uma pessoa
-GET {{baseUrl}}/pessoas/5/
-
+GET {{baseUrl}}/pessoas/18
 ### cria uma pessoa
 POST {{baseUrl}}/pessoas/
 Content-Type: application/json
 
 {
-  "nome": "Luiedswwz",
-  "email": "luizwew@example.ceom",
+  "nome": "derek Dark",
+  "email": "derek.dark@example.ceom",
   "passwordHash": "1e234www56"
 }
 ### cria uma pessoa (senha automática no backend)

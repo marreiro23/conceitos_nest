@@ -2,29 +2,26 @@ flowchart TB
   Client[Cliente HTTP]
   Main[src/main.ts bootstrap]
   Validation[ValidationPipe global]
-  Rules[whitelist forbidNonWhitelisted transform]
+  Rules[whitelist forbidNonWhitelisted transform:false]
   AppModule[AppModule]
-  AppController[AppController rota home]
+  AppController[AppController @Controller home]
   AppService[AppService]
 
   Client --> Main
   Main --> AppModule
-  Main --> Validation
+  Main --> GlobalPipes[useGlobalPipes]
+  GlobalPipes --> Validation
   Validation --> Rules
+  GlobalPipes --> ParseIntIdPipeGlobal[ParseIntIdPipe global - valida params id]
   AppModule --> AppController
   AppModule --> AppService
 
   subgraph Endpoints_App
-    HomeController[Controller home]
-    GetHello[getHello]
-    Exemplo[exemplo]
+    HomeController["Controller home — sem rotas ativas (@Get comentado)"]
     ServiceHello[AppService getHello]
     ServiceExemplo[AppService solucionaExemplo]
   end
 
   AppController --> HomeController
-  HomeController --> GetHello
-  HomeController --> Exemplo
-  Exemplo --> ServiceExemplo
   AppService --> ServiceHello
   AppService --> ServiceExemplo
