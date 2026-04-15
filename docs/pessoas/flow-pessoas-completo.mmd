@@ -1,0 +1,77 @@
+flowchart TB
+  subgraph Modulo
+    PessoasModule[PessoasModule]
+    ImportsPessoas[imports TypeOrmModule forFeature Pessoa]
+    ControllersPessoas[controllers PessoasController]
+    ProvidersPessoas[providers PessoasService]
+    ExportsPessoas[exports PessoasService]
+  end
+
+  subgraph DTOs_Validacoes
+    CreatePessoaDto[CreatePessoaDto]
+    NomeVal[nome IsNotEmpty IsString MinLength 3]
+    EmailVal[email IsNotEmpty IsEmail]
+    PasswordVal[passwordHash IsNotEmpty IsString MinLength 3]
+    UpdatePessoaDto[UpdatePessoaDto extends PartialType CreatePessoaDto]
+  end
+
+  subgraph Controller
+    CP[PessoasController]
+    CCreate[POST create]
+    CFindAll[GET findAll]
+    CFindOne[GET id ParseIntPipe]
+    CUpdate[PATCH id ParseIntPipe]
+    CRemove[DELETE id ParseIntPipe]
+  end
+
+  subgraph Service_Funcoes
+    SP[PessoasService]
+    SCreate[create]
+    SFindAll[findAll]
+    SFindOne[findOne]
+    SUpdate[update]
+    SRemove[remove]
+    SRemoveAll[removeAll]
+  end
+
+  subgraph Persistencia
+    Repo[Repository Pessoa]
+    Entity[Entity Pessoa id nome email password_hash created_at updated_at]
+  end
+
+  PessoasModule --> ImportsPessoas
+  PessoasModule --> ControllersPessoas
+  PessoasModule --> ProvidersPessoas
+  PessoasModule --> ExportsPessoas
+
+  CreatePessoaDto --> NomeVal
+  CreatePessoaDto --> EmailVal
+  CreatePessoaDto --> PasswordVal
+  UpdatePessoaDto --> CreatePessoaDto
+
+  CP --> CCreate
+  CP --> CFindAll
+  CP --> CFindOne
+  CP --> CUpdate
+  CP --> CRemove
+
+  CCreate --> SCreate
+  CFindAll --> SFindAll
+  CFindOne --> SFindOne
+  CUpdate --> SUpdate
+  CRemove --> SRemove
+
+  SP --> SCreate
+  SP --> SFindAll
+  SP --> SFindOne
+  SP --> SUpdate
+  SP --> SRemove
+  SP --> SRemoveAll
+
+  SCreate --> Repo
+  SFindAll --> Repo
+  SFindOne --> Repo
+  SUpdate --> Repo
+  SRemove --> Repo
+  SRemoveAll --> Repo
+  Repo --> Entity

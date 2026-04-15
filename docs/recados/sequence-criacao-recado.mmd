@@ -1,0 +1,22 @@
+sequenceDiagram
+  autonumber
+  participant C as Cliente
+  participant RC as RecadosController
+  participant RS as RecadosService
+  participant PS as PessoasService
+  participant RR as RecadoRepository
+  participant DB as PostgreSQL
+
+  C->>RC: POST /recados {texto,deId,paraId}
+  RC->>RS: create(createRecadoDto)
+  RS->>PS: findOne(deId)
+  PS-->>RS: Pessoa de
+  RS->>PS: findOne(paraId)
+  PS-->>RS: Pessoa para
+  RS->>RR: create({texto,de,para,lido,data})
+  RS->>RR: save(recado)
+  RR->>DB: INSERT recado
+  DB-->>RR: recado persistido
+  RR-->>RS: recado
+  RS-->>RC: recado resumido (de.id, para.id)
+  RC-->>C: 201 Created

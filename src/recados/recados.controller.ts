@@ -8,6 +8,7 @@ import {
   HttpCode,
   HttpStatus,
   Delete,
+  Query,
   ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import { RecadosService } from './recados.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 // Interface para os parâmetros de paginação:
 // limit é o número máximo de itens a retornar
@@ -27,9 +29,14 @@ export class RecadosController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll() {
-    return this.recadosService.findAll();
+  async findAll(@Query() paginationDto: PaginationDto) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { limit = 10, offset = 0 } = paginationDto;
+    const recados = await this.recadosService.findAll(paginationDto);
+
+    return recados; // Retorna a lista de recados obtida do serviço
   }
+
   // Encontrar um recado específico
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {

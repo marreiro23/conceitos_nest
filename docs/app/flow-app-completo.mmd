@@ -1,0 +1,30 @@
+flowchart TB
+  Client[Cliente HTTP]
+  Main[src/main.ts bootstrap]
+  Validation[ValidationPipe global]
+  Rules[whitelist forbidNonWhitelisted transform]
+  AppModule[AppModule]
+  AppController[AppController rota home]
+  AppService[AppService]
+
+  Client --> Main
+  Main --> AppModule
+  Main --> Validation
+  Validation --> Rules
+  AppModule --> AppController
+  AppModule --> AppService
+
+  subgraph Endpoints_App
+    HomeController[Controller home]
+    GetHello[getHello]
+    Exemplo[exemplo]
+    ServiceHello[AppService getHello]
+    ServiceExemplo[AppService solucionaExemplo]
+  end
+
+  AppController --> HomeController
+  HomeController --> GetHello
+  HomeController --> Exemplo
+  Exemplo --> ServiceExemplo
+  AppService --> ServiceHello
+  AppService --> ServiceExemplo

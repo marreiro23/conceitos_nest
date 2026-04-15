@@ -1,0 +1,17 @@
+flowchart TB
+  Client[Cliente] --> PessoasController[PessoasController]
+
+  PessoasController --> Create[POST /pessoas]
+  PessoasController --> FindAll[GET /pessoas]
+  PessoasController --> FindOne[GET /pessoas/:id]
+  PessoasController --> Update[PATCH /pessoas/:id]
+  PessoasController --> Delete[DELETE /pessoas/:id]
+
+  Create --> PessoasService[PessoasService]
+  FindAll --> PessoasService
+  FindOne --> PessoasService
+  Update --> PessoasService
+  Delete --> PessoasService
+
+  PessoasService --> PessoasRepository[Repository Pessoa]
+  PessoasRepository --> Db[(PostgreSQL)]

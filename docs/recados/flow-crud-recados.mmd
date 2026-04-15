@@ -1,0 +1,18 @@
+flowchart TB
+  Client[Cliente] --> RecadosController[RecadosController]
+
+  RecadosController --> List[GET /recados limit offset]
+  RecadosController --> One[GET /recados/:id]
+  RecadosController --> Create[POST /recados]
+  RecadosController --> Update[PATCH /recados/:id]
+  RecadosController --> Delete[DELETE /recados/:id]
+
+  List --> RecadosService[RecadosService]
+  One --> RecadosService
+  Create --> RecadosService
+  Update --> RecadosService
+  Delete --> RecadosService
+
+  RecadosService --> RecadoRepository[Repository Recado]
+  RecadosService --> PessoasService[PessoasService]
+  RecadoRepository --> Db[(PostgreSQL)]

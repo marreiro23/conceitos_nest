@@ -28,7 +28,7 @@ export class PessoasController {
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.pessoasService.findOne(id);
+    return this.pessoasService.findOne(+id);
   }
 
   @Patch(':id')
@@ -36,11 +36,11 @@ export class PessoasController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePessoaDto: UpdatePessoaDto,
   ) {
-    return this.pessoasService.update(id, updatePessoaDto);
+    return this.pessoasService.update(+id, updatePessoaDto);
   }
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
-    return this.pessoasService.remove(id);
+    return this.pessoasService.remove(+id);
   }
 }

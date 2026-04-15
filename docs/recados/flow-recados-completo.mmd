@@ -1,0 +1,86 @@
+flowchart TB
+  subgraph Modulo
+    RecadosModule[RecadosModule]
+    ImportsRecados[imports TypeOrmModule forFeature Recado + PessoasModule]
+    ControllersRecados[controllers RecadosController]
+    ProvidersRecados[providers RecadosService]
+  end
+
+  subgraph DTOs_Validacoes
+    PaginationDto[PaginationDto]
+    P1[limit IsOptional IsInt Min1 Max50 Type Number]
+    P2[offset IsOptional IsInt Min0 Type Number]
+    CreateRecadoDto[CreateRecadoDto]
+    R1[texto IsOptional IsString]
+    R2[deId IsPositive]
+    R3[paraId IsPositive]
+    UpdateRecadoDto[UpdateRecadoDto extends PartialType CreateRecadoDto]
+    R4[lido IsBoolean IsOptional]
+  end
+
+  subgraph Controller
+    CR[RecadosController]
+    RFindAll[GET findAll Query pagination]
+    RFindOne[GET id ParseIntPipe]
+    RCreate[POST create]
+    RUpdate[PATCH update]
+    RRemove[DELETE remove]
+  end
+
+  subgraph Service_Funcoes
+    SR[RecadosService]
+    ThrowNotFound[throwNotFoundError]
+    SFindAll[findAll]
+    SFindOne[findOne]
+    SCreate[create]
+    SUpdate[update]
+    SRemove[remove]
+  end
+
+  subgraph Dependencias
+    RepoRecado[Repository Recado]
+    PessoasServiceDep[PessoasService importado de PessoasModule]
+    EntityRecado[Entity Recado texto de para lido data createdAt updatedAt]
+    EntityPessoa[Entity Pessoa relacionamento de/para]
+  end
+
+  RecadosModule --> ImportsRecados
+  RecadosModule --> ControllersRecados
+  RecadosModule --> ProvidersRecados
+
+  PaginationDto --> P1
+  PaginationDto --> P2
+  CreateRecadoDto --> R1
+  CreateRecadoDto --> R2
+  CreateRecadoDto --> R3
+  UpdateRecadoDto --> CreateRecadoDto
+  UpdateRecadoDto --> R4
+
+  CR --> RFindAll
+  CR --> RFindOne
+  CR --> RCreate
+  CR --> RUpdate
+  CR --> RRemove
+
+  RFindAll --> SFindAll
+  RFindOne --> SFindOne
+  RCreate --> SCreate
+  RUpdate --> SUpdate
+  RRemove --> SRemove
+
+  SR --> ThrowNotFound
+  SR --> SFindAll
+  SR --> SFindOne
+  SR --> SCreate
+  SR --> SUpdate
+  SR --> SRemove
+
+  SFindAll --> RepoRecado
+  SFindOne --> RepoRecado
+  SCreate --> PessoasServiceDep
+  SCreate --> RepoRecado
+  SUpdate --> RepoRecado
+  SRemove --> RepoRecado
+
+  RepoRecado --> EntityRecado
+  EntityRecado --> EntityPessoa

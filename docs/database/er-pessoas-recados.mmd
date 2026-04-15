@@ -1,0 +1,23 @@
+erDiagram
+  PESSOAS {
+    int id PK
+    varchar nome
+    varchar email UK
+    varchar password_hash
+    timestamp created_at
+    timestamp updated_at
+  }
+
+  RECADOS {
+    int id PK
+    varchar texto
+    int de FK
+    int para FK
+    boolean lido
+    date data
+    timestamp created_at
+    timestamp updated_at
+  }
+
+  PESSOAS ||--o{ RECADOS : envia
+  PESSOAS ||--o{ RECADOS : recebe

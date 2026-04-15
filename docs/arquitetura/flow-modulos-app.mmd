@@ -1,0 +1,30 @@
+flowchart TB
+  subgraph Core
+    AppModule[AppModule]
+  end
+
+  subgraph Domain
+    RecadosModule[RecadosModule]
+    PessoasModule[PessoasModule]
+    ConceitosAutomaticoModule[ConceitosAutomaticoModule]
+    ConceitosManualModule[ConceitosManualModule]
+  end
+
+  subgraph Infra
+    ConfigModule[ConfigModule.forRoot]
+    TypeOrmRoot[TypeOrmModule.forRoot]
+    RecadoFeature[TypeOrmModule.forFeature Recado]
+    PessoaFeature[TypeOrmModule.forFeature Pessoa]
+  end
+
+  AppModule --> ConfigModule
+  AppModule --> TypeOrmRoot
+  AppModule --> RecadosModule
+  AppModule --> PessoasModule
+
+  RecadosModule --> PessoasModule
+  RecadosModule --> RecadoFeature
+  PessoasModule --> PessoaFeature
+
+  ConceitosAutomaticoModule -. nao importado no AppModule .-> AppModule
+  ConceitosManualModule -. nao importado no AppModule .-> AppModule

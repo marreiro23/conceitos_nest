@@ -1,0 +1,7 @@
+flowchart LR
+  Client[Cliente HTTP] --> Main[src/main.ts bootstrap]
+  Main --> NestFactory[NestFactory.create AppModule]
+  NestFactory --> AppModule[AppModule]
+  Main --> ValidationPipe[ValidationPipe global]
+  ValidationPipe --> Rules[whitelist + forbidNonWhitelisted + transform]
+  Main --> Listen[app.listen PORT 3000 default]

@@ -61,4 +61,12 @@ export class PessoasService {
 
     return this.pessoasRepository.remove(pessoa);
   }
+
+  async removeAll() {
+    const pessoas = await this.pessoasRepository.find();
+
+    if (!pessoas.length) throw new NotFoundException(`No pessoas found`);
+
+    return this.pessoasRepository.remove(pessoas);
+  }
 }

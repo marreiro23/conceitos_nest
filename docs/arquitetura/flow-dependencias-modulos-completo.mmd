@@ -1,0 +1,61 @@
+flowchart TB
+  subgraph Core
+    AppModule[AppModule]
+    AppController[AppController]
+    AppService[AppService]
+  end
+
+  subgraph Domain_Pessoas
+    PessoasModule[PessoasModule]
+    PessoasController[PessoasController]
+    PessoasService[PessoasService]
+    PessoaRepo[Repository Pessoa]
+    PessoaEntity[Entity Pessoa]
+  end
+
+  subgraph Domain_Recados
+    RecadosModule[RecadosModule]
+    RecadosController[RecadosController]
+    RecadosService[RecadosService]
+    RecadoRepo[Repository Recado]
+    RecadoEntity[Entity Recado]
+  end
+
+  subgraph Domain_Conceitos_Nao_Ativos
+    ConceitosAutomaticoModule[ConceitosAutomaticoModule]
+    ConceitosManualModule[ConceitosManualModule]
+  end
+
+  subgraph Infra
+    ConfigModule[ConfigModule forRoot global]
+    TypeOrmRoot[TypeOrmModule forRoot]
+    PessoaFeature[TypeOrmModule forFeature Pessoa]
+    RecadoFeature[TypeOrmModule forFeature Recado]
+  end
+
+  AppModule --> ConfigModule
+  AppModule --> TypeOrmRoot
+  AppModule --> RecadosModule
+  AppModule --> PessoasModule
+  AppModule --> AppController
+  AppModule --> AppService
+
+  PessoasModule --> PessoaFeature
+  PessoasModule --> PessoasController
+  PessoasModule --> PessoasService
+  PessoasService --> PessoaRepo
+  PessoaRepo --> PessoaEntity
+
+  RecadosModule --> RecadoFeature
+  RecadosModule --> PessoasModule
+  RecadosModule --> RecadosController
+  RecadosModule --> RecadosService
+  RecadosService --> RecadoRepo
+  RecadoRepo --> RecadoEntity
+  RecadosService --> PessoasService
+
+  PessoasModule -. exporta .-> PessoasService
+  RecadosModule -. depende do export .-> PessoasService
+
+  ConceitosAutomaticoModule -. nao importado no AppModule .-> AppModule
+  ConceitosManualModule -. nao importado no AppModule .-> AppModule

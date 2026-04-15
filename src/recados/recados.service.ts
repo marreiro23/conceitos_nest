@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PessoasService } from 'src/pessoas/pessoas.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class RecadosService {
@@ -19,9 +20,13 @@ export class RecadosService {
     // Linha adicionada para lançar um erro intencionalmente, permitindo testar a integração com o Sentry, uma plataforma de monitoramento de erros e desempenho para aplicações. Ao lançar esse erro, podemos verificar se ele é capturado corretamente pelo Sentry e se as informações relevantes sobre o erro são registradas para análise posterior.
   }
 
-  async findAll() {
+  async findAll(paginationDto: PaginationDto) {
+    const { limit = 10, offset = 0 } = paginationDto;
+
     const recados = await this.recadoRepository.find({
-      relations: ['de', 'para'],
+      take: limit, // quantos registros serão exibidos por pagina.
+      skip: offset, // quantos registros serão pulados para chegar na página desejada.
+      // relations: ['de', 'para'],
       order: {
         id: 'desc',
       },
@@ -64,7 +69,7 @@ export class RecadosService {
 
     if (recado) return recado;
 
-    this.throwNotFoundError();
+    return this.throwNotFoundError();
   }
 
   async create(createRecadoDto: CreateRecadoDto) {
@@ -97,28 +102,24 @@ export class RecadosService {
   }
 
   async update(id: number, updateRecadoDto: UpdateRecadoDto) {
-    const partialUpdateRecadoDto = {
-      lido: updateRecadoDto?.lido,
-      texto: updateRecadoDto?.texto,
-    };
-
     const recado = await this.recadoRepository.preload({
       id,
-      ...partialUpdateRecadoDto,
+      ...updateRecadoDto,
     });
 
-    if (!recado) return this.throwNotFoundError();
+    if (!recado) {
+      throw new NotFoundException('Recado não encontrado');
+    }
 
-    await this.recadoRepository.save(recado);
-    return recado;
+    return this.recadoRepository.save(recado);
   }
 
   async remove(id: number) {
-    const recado = await this.recadoRepository.findOneBy({
-      id,
-    });
+    const recado = await this.recadoRepository.findOneBy({ id });
 
-    if (!recado) return this.throwNotFoundError();
+    if (!recado) {
+      throw new NotFoundException(`Recado com ID ${id} não encontrado`);
+    }
 
     return this.recadoRepository.remove(recado);
   }
