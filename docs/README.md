@@ -28,6 +28,8 @@ Este diretório centraliza os diagramas Mermaid da aplicação.
 
 - [flow-crud-recados.mmd](./recados/flow-crud-recados.mmd)
 - [flow-recados-completo.mmd](./recados/flow-recados-completo.mmd)
+- [flow-uml-recados.mmd](./recados/flow-uml-recados.mmd)
+- [sequence-comunicacao-recados.mmd](./recados/sequence-comunicacao-recados.mmd)
 - [sequence-criacao-recado.mmd](./recados/sequence-criacao-recado.mmd)
 
 ### App
@@ -61,5 +63,6 @@ Regras:
 
 ## Última atualização
 
-2026-04-14 (índice completo + migração controlada do legado; auditoria rodada 2
-aplicada: `flow-app-completo.mmd` e `flow-recados-completo.mmd` corrigidos)
+2026-04-15 (diagramas atualizados com integrações de `TypeOrmModule`
+(`forRoot`/`forFeature`), `MyDynamicModule.register` e dependências entre
+módulos `Recados` e `Pessoas`)

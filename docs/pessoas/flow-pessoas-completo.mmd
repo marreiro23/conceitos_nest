@@ -1,7 +1,7 @@
 flowchart TB
   subgraph Modulo
     PessoasModule[PessoasModule]
-    ImportsPessoas[imports TypeOrmModule forFeature Pessoa]
+    ImportsPessoas[imports TypeOrmModule forFeature Pessoa + MyDynamicModule register]
     ControllersPessoas[controllers PessoasController]
     ProvidersPessoas[providers PessoasService]
     ExportsPessoas[exports PessoasService]
@@ -25,7 +25,7 @@ flowchart TB
   end
 
   subgraph Service_Funcoes
-    SP[PessoasService]
+    SP[PessoasService scope REQUEST]
     SCreate[create]
     SFindAll[findAll]
     SFindOne[findOne]
@@ -39,10 +39,16 @@ flowchart TB
     Entity[Entity Pessoa id nome email password_hash created_at updated_at]
   end
 
+  subgraph Integracao
+    DynamicConfigPessoas[MY_DYNAMIC_CONFIG disponivel no modulo]
+    RecadosModuleDep[RecadosModule consome PessoasService exportado]
+  end
+
   PessoasModule --> ImportsPessoas
   PessoasModule --> ControllersPessoas
   PessoasModule --> ProvidersPessoas
   PessoasModule --> ExportsPessoas
+  ImportsPessoas --> DynamicConfigPessoas
 
   CreatePessoaDto --> NomeVal
   CreatePessoaDto --> EmailVal
@@ -75,3 +81,5 @@ flowchart TB
   SRemove --> Repo
   SRemoveAll --> Repo
   Repo --> Entity
+
+  ExportsPessoas --> RecadosModuleDep

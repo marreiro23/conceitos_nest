@@ -11,10 +11,12 @@ flowchart TB
   end
 
   subgraph Infra
-    ConfigModule[ConfigModule.forRoot]
-    TypeOrmRoot[TypeOrmModule.forRoot]
+    ConfigModule[ConfigModule.forRoot global env .env.local/.env]
+    TypeOrmRoot[TypeOrmModule.forRoot postgres autoLoadEntities synchronize migrationsRun]
     RecadoFeature[TypeOrmModule.forFeature Recado]
     PessoaFeature[TypeOrmModule.forFeature Pessoa]
+    DynamicRecados[MyDynamicModule.register Recados]
+    DynamicPessoas[MyDynamicModule.register Pessoas]
   end
 
   AppModule --> ConfigModule
@@ -24,7 +26,11 @@ flowchart TB
 
   RecadosModule --> PessoasModule
   RecadosModule --> RecadoFeature
+  RecadosModule --> DynamicRecados
   PessoasModule --> PessoaFeature
+  PessoasModule --> DynamicPessoas
+
+  RecadosModule -. forwardRef para evitar ciclo .-> PessoasModule
 
   ConceitosAutomaticoModule -. nao importado no AppModule .-> AppModule
   ConceitosManualModule -. nao importado no AppModule .-> AppModule

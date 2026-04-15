@@ -7,10 +7,15 @@ import { Pessoa } from './entities/pessoa.entity';
 
 @Injectable({ scope: Scope.REQUEST })
 export class PessoasService {
+  private count = 0;
+
   constructor(
     @InjectRepository(Pessoa)
     private readonly pessoasRepository: Repository<Pessoa>,
-  ) {}
+  ) {
+    this.count++;
+    console.log(`Instancia de PessoasService criada count: ${this.count}`);
+  }
 
   async create(createPessoaDto: CreatePessoaDto) {
     const pessoa = this.pessoasRepository.create({
@@ -29,6 +34,10 @@ export class PessoasService {
   }
 
   async findOne(id: number) {
+    this.count++;
+    console.log(
+      `Instancia de PessoasService criada: ${this.count} - findOne - ID: ${id}`,
+    );
     const pessoa = await this.pessoasRepository.findOne({
       where: {
         id,
@@ -47,6 +56,10 @@ export class PessoasService {
     });
 
     if (!pessoa) {
+      this.count++;
+      console.log(
+        `Pessoas - - - Service: ${this.count} - update - Pessoa with ID ${id} not found`,
+      );
       throw new NotFoundException(`Pessoa com ID ${id} não encontrada`);
     }
 
@@ -58,7 +71,12 @@ export class PessoasService {
       id,
     });
 
-    if (!pessoa) throw new NotFoundException(`Pessoa with ID ${id} not found`);
+    if (!pessoa) {
+      console.log(
+        `Pessoas - - - Service: ${this.count} - remove - Pessoa with ID ${id} not found`,
+      );
+      throw new NotFoundException(`Pessoa with ID ${id} not found`);
+    }
 
     return this.pessoasRepository.remove(pessoa);
   }

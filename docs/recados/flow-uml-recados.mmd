@@ -1,0 +1,87 @@
+classDiagram
+  direction TB
+
+  class RecadosModule {
+    +imports: TypeOrmModule.forFeature(Recado)
+    +imports: forwardRef(() => PessoasModule)
+    +imports: MyDynamicModule.register(...)
+    +controllers: RecadosController
+    +providers: RecadosService, RecadosUtils
+    +exports: RecadosUtils
+  }
+
+  class RecadosController {
+    -recadosService: RecadosService
+    -myDynamicConfigs: MyDynamicModuleConfigs
+    +findAll(paginationDto: PaginationDto)
+    +findOne(id: string)
+    +create(createRecadoDto: CreateRecadoDto)
+    +update(id: string, updateRecadoDto: UpdateRecadoDto)
+    +remove(id: string)
+  }
+
+  class RecadosService {
+    -recadoRepository: Repository~Recado~
+    -pessoasService: PessoasService
+    +throwNotFoundError()
+    +findAll(paginationDto: PaginationDto)
+    +findOne(id: number)
+    +create(createRecadoDto: CreateRecadoDto)
+    +update(id: number, updateRecadoDto: UpdateRecadoDto)
+    +remove(id: number)
+  }
+
+  class Recado {
+    +id: number
+    +texto: string
+    +de: Pessoa
+    +para: Pessoa
+    +lido: boolean
+    +data: Date
+    +createdAt: Date
+    +updatedAt: Date
+  }
+
+  class CreateRecadoDto {
+    +texto?: string
+    +deId: number
+    +paraId: number
+  }
+
+  class UpdateRecadoDto {
+    +lido?: boolean
+  }
+
+  class PaginationDto {
+    +limit?: number
+    +offset?: number
+  }
+
+  class RecadosUtils {
+    +inverteString(str: string) string
+  }
+
+  class PessoasService
+  class Pessoa
+  class Repository~Recado~
+  class MyDynamicModuleConfigs
+
+  UpdateRecadoDto --|> CreateRecadoDto : PartialType
+
+  RecadosModule --> RecadosController : registers
+  RecadosModule --> RecadosService : provides
+  RecadosModule --> RecadosUtils : provides/exports
+  RecadosModule --> PessoasService : depends on export
+
+  RecadosController --> RecadosService : uses
+  RecadosController --> MyDynamicModuleConfigs : injects
+  RecadosController ..> PaginationDto : query
+  RecadosController ..> CreateRecadoDto : body
+  RecadosController ..> UpdateRecadoDto : body
+
+  RecadosService --> Repository~Recado~ : injects
+  RecadosService --> PessoasService : injects
+  RecadosService --> Recado : manages
+
+  Recado --> Pessoa : de
+  Recado --> Pessoa : para

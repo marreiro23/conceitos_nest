@@ -1,9 +1,10 @@
 flowchart TB
   subgraph Modulo
     RecadosModule[RecadosModule]
-    ImportsRecados[imports TypeOrmModule forFeature Recado + PessoasModule]
+    ImportsRecados[imports TypeOrmModule forFeature Recado + forwardRef PessoasModule + MyDynamicModule register]
     ControllersRecados[controllers RecadosController]
-    ProvidersRecados[providers RecadosService]
+    ProvidersRecados[providers RecadosService + RecadosUtils]
+    ExportsRecados[exports RecadosUtils]
   end
 
   subgraph DTOs_Validacoes
@@ -19,7 +20,7 @@ flowchart TB
   end
 
   subgraph Controller
-    CR[RecadosController UseInterceptors ChangeDataInterceptor class-level]
+    CR[RecadosController]
     RFindAll[GET findAll Query pagination HttpCode 200]
     RFindOne[GET id - ParseIntIdPipe via useGlobalPipes main.ts]
     RCreate[POST create]
@@ -40,6 +41,7 @@ flowchart TB
   subgraph Dependencias
     RepoRecado[Repository Recado]
     PessoasServiceDep[PessoasService importado de PessoasModule]
+    DynamicConfig[MY_DYNAMIC_CONFIG injetado no Controller]
     EntityRecado[Entity Recado texto de para lido data createdAt updatedAt]
     EntityPessoa[Entity Pessoa relacionamento de/para]
   end
@@ -47,6 +49,7 @@ flowchart TB
   RecadosModule --> ImportsRecados
   RecadosModule --> ControllersRecados
   RecadosModule --> ProvidersRecados
+  RecadosModule --> ExportsRecados
 
   PaginationDto --> P1
   PaginationDto --> P2
@@ -61,6 +64,7 @@ flowchart TB
   CR --> RCreate
   CR --> RUpdate
   CR --> RRemove
+  CR --> DynamicConfig
 
   RFindAll --> SFindAll
   RFindOne --> SFindOne
@@ -84,3 +88,4 @@ flowchart TB
 
   RepoRecado --> EntityRecado
   EntityRecado --> EntityPessoa
+  RecadosModule -. forwardRef para ciclo com PessoasModule .-> PessoasServiceDep

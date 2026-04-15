@@ -11,14 +11,17 @@ flowchart TB
     PessoasService[PessoasService]
     PessoaRepo[Repository Pessoa]
     PessoaEntity[Entity Pessoa]
+    PessoasDynamicCfg[MY_DYNAMIC_CONFIG token]
   end
 
   subgraph Domain_Recados
     RecadosModule[RecadosModule]
     RecadosController[RecadosController]
     RecadosService[RecadosService]
+    RecadosUtils[RecadosUtils]
     RecadoRepo[Repository Recado]
     RecadoEntity[Entity Recado]
+    RecadosDynamicCfg[MY_DYNAMIC_CONFIG token]
   end
 
   subgraph Domain_Conceitos_Nao_Ativos
@@ -27,10 +30,12 @@ flowchart TB
   end
 
   subgraph Infra
-    ConfigModule[ConfigModule forRoot global]
-    TypeOrmRoot[TypeOrmModule forRoot]
+    ConfigModule[ConfigModule forRoot global env .env.local/.env]
+    TypeOrmRoot[TypeOrmModule forRoot postgres autoLoadEntities synchronize migrationsRun]
     PessoaFeature[TypeOrmModule forFeature Pessoa]
     RecadoFeature[TypeOrmModule forFeature Recado]
+    DynamicPessoas[MyDynamicModule register Pessoas]
+    DynamicRecados[MyDynamicModule register Recados]
   end
 
   AppModule --> ConfigModule
@@ -41,21 +46,28 @@ flowchart TB
   AppModule --> AppService
 
   PessoasModule --> PessoaFeature
+  PessoasModule --> DynamicPessoas
   PessoasModule --> PessoasController
   PessoasModule --> PessoasService
   PessoasService --> PessoaRepo
   PessoaRepo --> PessoaEntity
+  DynamicPessoas --> PessoasDynamicCfg
 
   RecadosModule --> RecadoFeature
   RecadosModule --> PessoasModule
+  RecadosModule --> DynamicRecados
   RecadosModule --> RecadosController
   RecadosModule --> RecadosService
+  RecadosModule --> RecadosUtils
   RecadosService --> RecadoRepo
   RecadoRepo --> RecadoEntity
   RecadosService --> PessoasService
+  DynamicRecados --> RecadosDynamicCfg
+  RecadosController --> RecadosDynamicCfg
 
   PessoasModule -. exporta .-> PessoasService
   RecadosModule -. depende do export .-> PessoasService
+  RecadosModule -. forwardRef para evitar ciclo .-> PessoasModule
 
   ConceitosAutomaticoModule -. nao importado no AppModule .-> AppModule
   ConceitosManualModule -. nao importado no AppModule .-> AppModule

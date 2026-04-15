@@ -3,18 +3,32 @@ flowchart TB
   Main[src/main.ts bootstrap]
   Validation[ValidationPipe global]
   Rules[whitelist forbidNonWhitelisted transform:false]
+  ParseIntIdPipeGlobal[ParseIntIdPipe global - valida params id]
   AppModule[AppModule]
   AppController[AppController @Controller home]
   AppService[AppService]
+  ConfigModule[ConfigModule.forRoot global env .env.local/.env]
+  TypeOrmRoot[TypeOrmModule.forRoot postgres autoLoadEntities synchronize migrationsRun]
+  RecadosModule[RecadosModule]
+  PessoasModule[PessoasModule]
+  RecadoFeature[TypeOrmModule.forFeature Recado]
+  PessoaFeature[TypeOrmModule.forFeature Pessoa]
 
   Client --> Main
   Main --> AppModule
   Main --> GlobalPipes[useGlobalPipes]
   GlobalPipes --> Validation
   Validation --> Rules
-  GlobalPipes --> ParseIntIdPipeGlobal[ParseIntIdPipe global - valida params id]
+  GlobalPipes --> ParseIntIdPipeGlobal
   AppModule --> AppController
   AppModule --> AppService
+  AppModule --> ConfigModule
+  AppModule --> TypeOrmRoot
+  AppModule --> RecadosModule
+  AppModule --> PessoasModule
+  RecadosModule --> RecadoFeature
+  RecadosModule --> PessoasModule
+  PessoasModule --> PessoaFeature
 
   subgraph Endpoints_App
     HomeController["Controller home — sem rotas ativas (@Get comentado)"]

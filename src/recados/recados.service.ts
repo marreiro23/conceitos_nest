@@ -13,11 +13,17 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class RecadosService {
+  private count = 0;
+
   constructor(
     @InjectRepository(Recado)
     private readonly recadoRepository: Repository<Recado>,
     private readonly pessoasService: PessoasService,
-  ) {}
+  ) {
+    console.log('Recados  - - - - - Service - Instancia criada');
+    this.count++;
+    console.log(`Recados  - - - Service: ${this.count}`);
+  }
 
   throwNotFoundError() {
     throw new NotFoundException('Recado não encontrado');
@@ -52,8 +58,8 @@ export class RecadosService {
   }
 
   async findOne(id: number) {
-    // console.log('RecadosService Executado - findOne'); // Log para depuração, mostrando o ID recebido
-    // const recado = await this.recadoRepository.findOneBy({ id }); // O operador + é usado para converter a string id em um número, permitindo a comparação correta com o campo id dos recados, que é do tipo number
+    this.count++;
+    console.log(`Recados  - - - Service: ${this.count} - findOne - ID: ${id}`);
     const recado = await this.recadoRepository.findOne({
       where: {
         id,

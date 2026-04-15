@@ -1,0 +1,81 @@
+sequenceDiagram
+  autonumber
+  actor C as Cliente
+  participant RC as RecadosController
+  participant RS as RecadosService
+  participant PS as PessoasService
+  participant RR as RecadoRepository
+  participant DB as PostgreSQL
+
+  rect rgba(230, 245, 255, 0.6)
+    Note over C,DB: Listagem paginada (GET /recados)
+    C->>RC: GET /recados?limit&offset
+    RC->>RS: findAll(paginationDto)
+    RS->>RR: find({ take, skip, relations, select })
+    RR->>DB: SELECT recados + de/para
+    DB-->>RR: rows
+    RR-->>RS: Recado[]
+    RS-->>RC: Recado[]
+    RC-->>C: 200 OK
+  end
+
+  rect rgba(235, 255, 235, 0.6)
+    Note over C,DB: Criação (POST /recados)
+    C->>RC: POST /recados { texto, deId, paraId }
+    RC->>RS: create(createRecadoDto)
+    RS->>PS: findOne(deId)
+    PS-->>RS: Pessoa de
+    RS->>PS: findOne(paraId)
+    PS-->>RS: Pessoa para
+    RS->>RR: create({ texto, de, para, lido:false, data })
+    RS->>RR: save(recado)
+    RR->>DB: INSERT recado
+    DB-->>RR: recado persistido
+    RR-->>RS: Recado
+    RS-->>RC: Recado (de.id, para.id)
+    RC-->>C: 201 Created
+  end
+
+  rect rgba(255, 248, 230, 0.7)
+    Note over C,DB: Atualização (PATCH /recados/:id)
+    C->>RC: PATCH /recados/:id { ...campos }
+    RC->>RS: update(id, updateRecadoDto)
+    RS->>RR: preload({ id, ...dto })
+    alt recado encontrado
+      RR-->>RS: entidade preloaded
+      RS->>RR: save(recado)
+      RR->>DB: UPDATE recado
+      DB-->>RR: recado atualizado
+      RR-->>RS: Recado
+      RS-->>RC: Recado
+      RC-->>C: 200 OK
+    else recado não encontrado
+      RR-->>RS: undefined
+      RS-->>RC: NotFoundException
+      RC-->>C: 404 Not Found
+    end
+  end
+
+  rect rgba(255, 235, 235, 0.65)
+    Note over C,DB: Remoção (DELETE /recados/:id)
+    C->>RC: DELETE /recados/:id
+    RC->>RS: findOne(id)
+    RS->>RR: findOne({ where: { id }, relations })
+    alt recado encontrado
+      RR-->>RS: Recado
+      RS-->>RC: Recado
+      RC->>RS: remove(id)
+      RS->>RR: findOneBy({ id })
+      RR-->>RS: Recado
+      RS->>RR: remove(recado)
+      RR->>DB: DELETE recado
+      DB-->>RR: ok
+      RR-->>RS: Recado removido
+      RS-->>RC: Recado removido
+      RC-->>C: 200 OK (array com recado removido)
+    else recado não encontrado
+      RR-->>RS: null
+      RS-->>RC: NotFoundException
+      RC-->>C: 404 Not Found
+    end
+  end
