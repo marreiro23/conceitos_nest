@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class RecadosUtils {
   inverteString(str: string) {
-    console.log('Não é Mock, é o real');
+    // console.log('Não é Mock, é o real');
     // Luiz -> ziuL
     return str.split('').reverse().join('');
   }
@@ -13,7 +13,7 @@ export class RecadosUtils {
 @Injectable()
 export class RecadosUtilsMock {
   inverteString() {
-    console.log('Passou pelo mock');
+    // console.log('Passou pelo mock');
     return 'bbblabla';
   }
 

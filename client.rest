@@ -84,19 +84,19 @@ POST {{baseUrl}}/pessoas/
 Content-Type: application/json
 
 {
-  "nome": "Lui5z dxxAlberto",
-  "email": "ludxiz.axlberto@example.com",
+  "nome": "alberto.teste",
+  "email": "alberto.teste@example.com",
   "passwordHash": "123d4www56"
 }
 
 
 ### atualiza uma pessoa
-PATCH {{baseUrl}}/pessoas/21/
+PATCH {{baseUrl}}/pessoas/46/
 Content-Type: application/json
 
 {
-    "nome": "Lui14z Alberto",
-    "email": "lui14z.alberto@eexamdple.coem"
+    "nome": "alberto.teste2",
+    "email": "alberto.teste2@example.com"
 }
 
 ### Apaga uma pessoa
