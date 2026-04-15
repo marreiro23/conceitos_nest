@@ -1,38 +1,5 @@
 @baseUrl = http://localhost:3000
 
-# PESSOAS
-### Criar uma pessoa
-POST {{baseUrl}}/pessoas
-Content-Type: application/json
-
-{
-  "nome": "Joana Ddfark",
-  "email": "jozana.dxcdark@example.com",
-  "passwordHash": "hashed_password_123"
-}
-
-### Listar todas as pessoas
-GET {{baseUrl}}/pessoas
-
-### Buscar uma pessoa por ID
-GET {{baseUrl}}/pessoas/18
-
-### Atualizar uma pessoa
-PATCH {{baseUrl}}/pessoas/18
-Content-Type: application/json
-
-{
-  "nome": "Joana Ddfark Atualizada",
-  "email": "joana.ddfark.atualizada@example.com"
-}
-
-### Deletar uma pessoa
-DELETE {{baseUrl}}/pessoas/18
-
-### Deletar todas as pessoas
-DELETE {{baseUrl}}/pessoas/
-
-
 # RECADOS
 ### RecadosController
 
@@ -45,7 +12,7 @@ GET {{baseUrl}}/recados/
 Authorization: Bearer 123456
 
 ### lista apenas um recado
-GET {{baseUrl}}/recados/76/
+GET {{baseUrl}}/recados/92/
 
 ### cria um recado
 POST {{baseUrl}}/recados/
@@ -54,7 +21,7 @@ Content-Type: application/json
 {
 "deId": 21,
 "paraId": 20,
-"texto": "deId 21 'Joana' paraId 20'Leo'"
+"texto": "deId 21 'Joana' paraIdcxcfd 20'Leo'"
   }
 
 ### cria um recado (texto automático no backend)
@@ -88,9 +55,8 @@ DELETE {{baseUrl}}/recados/
 
 ##############################
 
-# Pessoas
+# PESSOAS
 
-# Pessoas
 ### PessoasController
 
 # @name PessoasController
@@ -103,38 +69,38 @@ GET {{baseUrl}}/pessoas/
 
 
 ### lista apenas uma pessoa
-GET {{baseUrl}}/pessoas/18
+GET {{baseUrl}}/pessoas/21
 ### cria uma pessoa
 POST {{baseUrl}}/pessoas/
 Content-Type: application/json
 
 {
-  "nome": "derek Dark",
-  "email": "derek.dark@example.ceom",
-  "passwordHash": "1e234www56"
+  "nome": "dexrek Dark",
+  "email": "derxek.dark@example.ceom",
+  "passwordHash": "1e234wwwx56"
 }
 ### cria uma pessoa (senha automática no backend)
 POST {{baseUrl}}/pessoas/
 Content-Type: application/json
 
 {
-  "nome": "Luiz dAlberto",
-  "email": "ludiz.alberto@example.com",
+  "nome": "Lui5z dxxAlberto",
+  "email": "ludxiz.axlberto@example.com",
   "passwordHash": "123d4www56"
 }
 
 
 ### atualiza uma pessoa
-PATCH {{baseUrl}}/pessoas/9/
+PATCH {{baseUrl}}/pessoas/21/
 Content-Type: application/json
 
 {
-    "nome": "Luiz eAlbderto",
-    "email": "luiezd.albeerto@eexamdple.coem"
+    "nome": "Lui14z Alberto",
+    "email": "lui14z.alberto@eexamdple.coem"
 }
 
 ### Apaga uma pessoa
-DELETE {{baseUrl}}/pessoas/9/
+DELETE {{baseUrl}}/pessoas/21/
 
 ### Apaga todas as pessoas
 DELETE {{baseUrl}}/pessoas/

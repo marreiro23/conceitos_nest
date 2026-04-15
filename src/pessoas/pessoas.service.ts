@@ -4,12 +4,14 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Pessoa } from './entities/pessoa.entity';
+import { RecadosUtils } from 'src/recados/recados.utils';
 
 @Injectable()
 export class PessoasService {
   constructor(
     @InjectRepository(Pessoa)
     private readonly pessoasRepository: Repository<Pessoa>,
+    private readonly recadosUtils: RecadosUtils,
   ) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
@@ -23,6 +25,7 @@ export class PessoasService {
   }
 
   async findAll() {
+    console.log(this.recadosUtils.inverteString('Marreiro'));
     const pessoas = await this.pessoasRepository.find();
     return pessoas;
   }
