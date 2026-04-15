@@ -6,8 +6,8 @@ POST {{baseUrl}}/pessoas
 Content-Type: application/json
 
 {
-  "nome": "Joana Dark",
-  "email": "joana.dark@example.com",
+  "nome": "Joana Ddfark",
+  "email": "jozana.dxcdark@example.com",
   "passwordHash": "hashed_password_123"
 }
 
@@ -15,19 +15,19 @@ Content-Type: application/json
 GET {{baseUrl}}/pessoas
 
 ### Buscar uma pessoa por ID
-GET {{baseUrl}}/pessoas/19
+GET {{baseUrl}}/pessoas/18
 
 ### Atualizar uma pessoa
-PATCH {{baseUrl}}/pessoas/19
+PATCH {{baseUrl}}/pessoas/18
 Content-Type: application/json
 
 {
-  "nome": "Joana Dark Atualizada",
-  "email": "joana.dark.atualizada@example.com"
+  "nome": "Joana Ddfark Atualizada",
+  "email": "joana.ddfark.atualizada@example.com"
 }
 
 ### Deletar uma pessoa
-DELETE {{baseUrl}}/pessoas/19
+DELETE {{baseUrl}}/pessoas/18
 
 ### Deletar todas as pessoas
 DELETE {{baseUrl}}/pessoas/
@@ -52,9 +52,9 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-"deId": 18,
+"deId": 21,
 "paraId": 20,
-"texto": "deId 18 'Joana' paraId 20'Leo'"
+"texto": "deId 21 'Joana' paraId 20'Leo'"
   }
 
 ### cria um recado (texto automático no backend)
@@ -64,12 +64,12 @@ Content-Type: application/json
 {
 "texto": "Recado automático",
 "deId": 20,
-"paraId": 18
+"paraId": 21
 }
 
 
 ### atualiza um recado
-PATCH {{baseUrl}}/recados/36/
+PATCH {{baseUrl}}/recados/92/
 Content-Type: application/json
 
 {
@@ -78,7 +78,7 @@ Content-Type: application/json
 }
 
 ### Apaga um recado
-DELETE {{baseUrl}}/recados/-7/
+DELETE {{baseUrl}}/recados/87/
 
 
 ### Apaga todos os recados

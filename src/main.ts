@@ -14,6 +14,9 @@ async function bootstrap() {
     }),
     new ParseIntIdPipe(), // Configura o ParseIntPipe para lançar um erro 400 em caso de falha de conversão
   );
-  await app.listen(process.env.PORT ?? 3000); // Inicia o servidor na porta definida em process.env.PORT ou na porta 3000 por padrão
+
+  // app.useGlobalFilters(new MyExceptionFilter()); // Configura o filtro de exceção global
+
+  await app.listen(3000);
 }
 void bootstrap();

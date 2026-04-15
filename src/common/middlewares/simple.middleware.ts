@@ -12,6 +12,7 @@ export class SimpleMiddleware implements NestMiddleware {
       req['user'] = {
         nome: 'Luiz',
         sobrenome: 'Silva',
+        role: 'user',
       };
     }
     res.setHeader('CABECALHO', 'DO MIDDLEWARE'); // Adiciona um header personalizado à resposta

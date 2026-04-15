@@ -5,42 +5,32 @@ import {
   Post,
   Patch,
   Body,
-  HttpCode,
-  HttpStatus,
   Delete,
   Query,
   NotFoundException,
-  UseInterceptors,
-  Req,
 } from '@nestjs/common';
 import { RecadosService } from './recados.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { AuthTokenInterceptor } from 'src/common/interceptors/auth.token.interceptor';
-import type { Request } from 'express';
 
-// Interface para os parâmetros de paginação:
-// limit é o número máximo de itens a retornar
-// offset é o número de itens a pular antes de começar a retornar os resultados
-
-@UseInterceptors(AuthTokenInterceptor)
+// @UseGuards(IsAdminGuard) // Guard para verificar a autenticação do token, garantindo que apenas usuários autenticados possam acessar as rotas deste controlador
 @Controller('recados') // Rota base para os recados, todas as rotas dentro deste controlador começarão com /recados
 export class RecadosController {
   constructor(private readonly recadosService: RecadosService) {} // Injeção de dependência do serviço de recados, permitindo que o controlador utilize os métodos definidos no serviço para manipular os recados
 
   // @UseInterceptors(TimingConnectionInterceptor, ErrorHandlingInterceptor) // Interceptor para adicionar um header personalizado à resposta
-  @HttpCode(HttpStatus.OK)
+  // @UseGuards(IsAdminGuard)
   @Get()
-  async findAll(@Query() paginationDto: PaginationDto, @Req() req: Request) {
-    console.log('RecadosController', req['user']); // Log para depuração, mostrando os parâmetros de paginação recebidos
+  async findAll(@Query() paginationDto: PaginationDto) {
+    console.log('Metodo da requisição:'); // Exemplo de uso do decorador personalizado @ReqDataParam para obter o método da requisição e logá-lo no console
     const recados = await this.recadosService.findAll(paginationDto);
-    return recados; // Retorna a lista de recados obtida do serviço
-  }
 
-  // Encontrar um recado específico
-  // @UseInterceptors(AddHeaderInterceptor, ErrorHandlingInterceptor)
+    return recados; // Retorna a lista de recados encontrados, utilizando o método findAll do serviço de recados, passando os parâmetros de paginação
+    // Encontrar um recado específico
+    // @UseInterceptors(AddHeaderInterceptor, ErrorHandlingInterceptor)
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
