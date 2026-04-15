@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,7 +7,11 @@ import { PessoasService } from 'src/pessoas/pessoas.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 
-@Injectable()
+// SCOPE DEFAULT -> O provider em questão é um SingleTon.
+// SCOPE REQUEST -> O provider em questão é instanciado a cada requisição.
+// SCOPE TRANSIENT -> É criado uma instância toda vez que injetar este provider.
+
+@Injectable({ scope: Scope.DEFAULT })
 export class RecadosService {
   constructor(
     @InjectRepository(Recado)

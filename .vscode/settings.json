@@ -69,5 +69,6 @@
   },
   "files.eol": "\n",
   "js/ts.tsdk.path": "node_modules\\typescript\\lib",
-  "workbench.browser.enableChatTools": true
+  "workbench.browser.enableChatTools": true,
+  "github.copilot.chat.agentDebugLog.fileLogging.enabled": true
 }

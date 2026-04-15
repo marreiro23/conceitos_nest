@@ -1,14 +1,17 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PessoasService } from './pessoas.service';
 import { PessoasController } from './pessoas.controller';
-import { Pessoa } from './entities/pessoa.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RecadosModule } from 'src/recados/recados.module';
+import { Pessoa } from './entities/pessoa.entity';
+import { MyDynamicModule } from 'src/my-dynamic/my-dynamic.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Pessoa]),
-    forwardRef(() => RecadosModule),
+    MyDynamicModule.register({
+      apiKey: 'my-api-key',
+      apiUrl: 'https://api.example.com',
+    }),
   ],
   controllers: [PessoasController],
   providers: [PessoasService],

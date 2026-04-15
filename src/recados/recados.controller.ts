@@ -15,31 +15,20 @@ import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { RemoveSpacesRegex } from 'src/common/regex/remove-spaces.regex';
-import { REMOVE_SPACES_REGEX } from './recados.constant';
-import { OnlyLowercaseLettersRegex } from 'src/common/regex/only-lowercase-letters.regex';
-import { ONLY_LOWERCASE_LETTERS_REGEX } from './recados.constant';
+import type { MyDynamicModuleConfigs } from 'src/my-dynamic/my-dynamic.module';
 
 @Controller('recados')
 export class RecadosController {
   constructor(
     private readonly recadosService: RecadosService,
-    @Inject(REMOVE_SPACES_REGEX)
-    private readonly removeSpacesRegex: RemoveSpacesRegex,
-    @Inject(ONLY_LOWERCASE_LETTERS_REGEX)
-    private readonly onlyLowercaseLettersRegex: OnlyLowercaseLettersRegex,
-  ) {}
-
+    @Inject('MY_DYNAMIC_CONFIG')
+    private readonly myDynamicConfigs: MyDynamicModuleConfigs,
+  ) {
+    console.log('RecadosController initialized with config:', myDynamicConfigs);
+    console.log('Server Name from config:', this.myDynamicConfigs.apiUrl);
+  }
   @Get()
   async findAll(@Query() paginationDto: PaginationDto) {
-    console.log(
-      this.removeSpacesRegex.execute('REMOVE OS ESPACOS = console 1'),
-    );
-    console.log(
-      this.onlyLowercaseLettersRegex.execute(
-        'TUDO MINUSCULA REMOVE OS ESPACOS - letra minuscula',
-      ),
-    );
     const recados = await this.recadosService.findAll(paginationDto);
 
     return recados;
