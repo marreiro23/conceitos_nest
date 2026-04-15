@@ -1,150 +1,134 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# conceitos_nest
 
-[circleci-image]:
-  https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API de estudos em **NestJS + TypeScript + TypeORM (PostgreSQL)**, organizada de
+forma modular com foco nos domínios de `pessoas` e `recados`.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Visão geral
 
-## Description
+- Stack principal: NestJS, TypeScript, TypeORM, PostgreSQL.
+- Validação global habilitada em `src/main.ts` com `ValidationPipe`
+  (`whitelist`, `forbidNonWhitelisted`, `transform`).
+- Composição principal em `src/app/app.module.ts`.
+- Fluxo arquitetural predominante: **Controller → Service → Repository
+  (TypeORM)**.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Estrutura principal do repositório
 
-## Catálogo oficial de diagramas Mermaid
+- `src/main.ts` — bootstrap da aplicação.
+- `src/app/` — módulo principal (`AppModule`) e componentes base.
+- `src/pessoas/` — módulo de pessoas (controller, service, DTOs, entidades).
+- `src/recados/` — módulo de recados (controller, service, DTOs, entidades e
+  utils).
+- `src/common/` — recursos compartilhados (pipes, DTOs, interceptors, filters
+  etc.).
+- `src/database/migrations/` — migrações do banco.
+- `test/` — testes E2E e configuração Jest E2E.
+- `docs/` — documentação e diagramas Mermaid.
 
-Índice navegável dos diagramas `.mmd` do projeto.
+## Dependências entre módulos (resumo)
 
-> Referência complementar: [docs/README.md](./docs/README.md)
+- `RecadosModule` importa `PessoasModule`.
+- `RecadosService` injeta `PessoasService`.
+- `ConceitosAutomaticoModule` e `ConceitosManualModule` existem, mas não estão
+  importados no `AppModule` atualmente.
 
-### Arquitetura geral
+## Setup e execução
 
-- [docs/modules-diagram.mmd](./docs/modules-diagram.mmd) _(legado temporário)_
-- [docs/arquitetura/flow-modulos-app.mmd](./docs/arquitetura/flow-modulos-app.mmd)
-- [docs/arquitetura/flow-dependencias-modulos-completo.mmd](./docs/arquitetura/flow-dependencias-modulos-completo.mmd)
+### Instalar dependências
+
+```bash
+npm install
+```
+
+### Rodar em desenvolvimento
+
+```bash
+npm run start:dev
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+### Testes
+
+```bash
+npm run test
+npm run test:e2e
+```
+
+## Configuração de ambiente
+
+- Arquivos esperados: `.env.local` e `.env`.
+- Consulte `.env.example` para variáveis esperadas.
+- Observação importante: `TypeOrmModule.forRoot` está com `synchronize: true` e
+  `migrationsRun: true` simultaneamente. Evite `synchronize: true` em produção.
+
+## Convenções do projeto
+
+- Preferir DTOs e serviços fortemente tipados (evitar `any`).
+- Manter consistência de imports conforme padrão atual do código.
+- Em endpoints novos/alterados, atualizar decorators de validação dos DTOs.
+- Para entidades não encontradas, preferir `NotFoundException` com mensagens
+  claras.
+
+## Documentação Mermaid
+
+Referência principal:
+
+- `docs/README.md`
+
+Convenção de nomenclatura para diagramas `.mmd`:
+
+- Prefixos obrigatórios: `flow-`, `er-`, `sequence-`
+- Nome em `kebab-case`
+- Regra em `/.github/instructions/mermaid-nomenclatura.instructions.md`
+
+Catálogo resumido:
+
+### Arquitetura
+
+- `docs/modules-diagram.mmd` _(legado temporário)_
+- `docs/arquitetura/flow-modulos-app.mmd`
+- `docs/arquitetura/flow-dependencias-modulos-completo.mmd`
 
 ### App / Bootstrap
 
-- [docs/app/flow-bootstrap-app.mmd](./docs/app/flow-bootstrap-app.mmd)
-- [docs/app/flow-app-completo.mmd](./docs/app/flow-app-completo.mmd)
+- `docs/app/flow-bootstrap-app.mmd`
+- `docs/app/flow-app-completo.mmd`
 
 ### Pessoas
 
-- [docs/pessoas/flow-crud-pessoas.mmd](./docs/pessoas/flow-crud-pessoas.mmd)
-- [docs/pessoas/flow-pessoas-completo.mmd](./docs/pessoas/flow-pessoas-completo.mmd)
+- `docs/pessoas/flow-crud-pessoas.mmd`
+- `docs/pessoas/flow-pessoas-completo.mmd`
 
 ### Recados
 
-- [docs/recados/flow-crud-recados.mmd](./docs/recados/flow-crud-recados.mmd)
-- [docs/recados/flow-recados-completo.mmd](./docs/recados/flow-recados-completo.mmd)
-- [docs/recados/sequence-criacao-recado.mmd](./docs/recados/sequence-criacao-recado.mmd)
+- `docs/recados/flow-crud-recados.mmd`
+- `docs/recados/flow-recados-completo.mmd`
+- `docs/recados/sequence-criacao-recado.mmd`
 
 ### Database
 
-- [docs/database/er-pessoas-recados.mmd](./docs/database/er-pessoas-recados.mmd)
-- [docs/database/er-modelo-completo-pessoas-recados.mmd](./docs/database/er-modelo-completo-pessoas-recados.mmd)
+- `docs/database/er-pessoas-recados.mmd`
+- `docs/database/er-modelo-completo-pessoas-recados.mmd`
 
-## Project setup
+## Arquivos de apoio para Copilot
 
-```bash
-$ npm install
-```
+- `AGENTS.md` — visão operacional resumida para agentes.
+- `/.github/copilot-instructions.md` — diretrizes principais de estilo,
+  arquitetura e fluxo.
+- `/.github/prompts/` — prompts utilitários para documentação Mermaid.
+- `/.github/instructions/` — instruções personalizadas por padrão de arquivo.
 
-## Compile and run the project
+## Licença
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are
-some key steps you can take to ensure it runs as efficiently as possible. Check
-out the [deployment documentation](https://docs.nestjs.com/deployment) for more
-information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application,
-check out [Mau](https://mau.nestjs.com), our official platform for deploying
-NestJS applications on AWS. Mau makes deployment straightforward and fast,
-requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to
-focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about
-  the framework.
-- For questions and support, please visit our
-  [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video
-  [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of
-  [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in
-  real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official
-  [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on
-  [X](https://x.com/nestframework) and
-  [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official
-  [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors
-and support by the amazing backers. If you'd like to join them, please
-[read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Projeto de estudos. Consulte a política do repositório para uso e distribuição.

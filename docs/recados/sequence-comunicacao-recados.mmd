@@ -7,7 +7,7 @@ sequenceDiagram
   participant RR as RecadoRepository
   participant DB as PostgreSQL
 
-  rect rgba(230, 245, 255, 0.6)
+  rect rgba(3, 13, 19, 0.6)
     Note over C,DB: Listagem paginada (GET /recados)
     C->>RC: GET /recados?limit&offset
     RC->>RS: findAll(paginationDto)
@@ -19,7 +19,7 @@ sequenceDiagram
     RC-->>C: 200 OK
   end
 
-  rect rgba(235, 255, 235, 0.6)
+  rect rgba(2, 43, 2, 0.6)
     Note over C,DB: Criação (POST /recados)
     C->>RC: POST /recados { texto, deId, paraId }
     RC->>RS: create(createRecadoDto)
@@ -36,7 +36,7 @@ sequenceDiagram
     RC-->>C: 201 Created
   end
 
-  rect rgba(255, 248, 230, 0.7)
+  rect rgba(40, 29, 4, 0.7)
     Note over C,DB: Atualização (PATCH /recados/:id)
     C->>RC: PATCH /recados/:id { ...campos }
     RC->>RS: update(id, updateRecadoDto)
@@ -56,7 +56,7 @@ sequenceDiagram
     end
   end
 
-  rect rgba(255, 235, 235, 0.65)
+  rect rgba(59, 3, 3, 0.65)
     Note over C,DB: Remoção (DELETE /recados/:id)
     C->>RC: DELETE /recados/:id
     RC->>RS: findOne(id)
