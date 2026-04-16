@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecadosModule } from 'src/recados/recados.module';
@@ -23,15 +23,23 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         DB_AUTO_LOAD_ENTITIES: Joi.number().min(0).max(1).default(0),
       }),
     }),
-    TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || '5432', 10),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      synchronize: Boolean(process.env.DB_SYNCHRONIZE === 'true'),
-      autoLoadEntities: Boolean(process.env.DB_AUTO_LOAD_ENTITIES),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          type: configService.get<'postgres'>('database.type'),
+          host: configService.get<string>('database.host'),
+          port: configService.get<number>('database.port'),
+          username: configService.get<string>('database.username'),
+          password: configService.get<string>('database.password'),
+          database: configService.get<string>('database.database'),
+          synchronize: configService.get<boolean>('database.synchronize'),
+          autoLoadEntities: configService.get<boolean>(
+            'database.autoLoadEntities',
+          ),
+        };
+      },
     }),
     RecadosModule,
     PessoasModule,
