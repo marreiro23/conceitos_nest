@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PessoasService } from 'src/pessoas/pessoas.service';
+import { Repository } from 'typeorm';
+import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { Recado } from './entities/recado.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PessoasService } from 'src/pessoas/pessoas.service';
-import { CreateRecadoDto } from './dto/create-recado.dto';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 // SCOPE DEFAULT -> O provider em questão é um SingleTon.
 // SCOPE REQUEST -> O provider em questão é instanciado a cada requisição.

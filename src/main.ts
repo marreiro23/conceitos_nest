@@ -10,13 +10,13 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, // Remove propriedades que não estão definidas no DTO
       forbidNonWhitelisted: true, // Lança um erro se houver propriedades não definidas no DTO
-      transform: false, // Transforma os dados de entrada para os tipos definidos no DTO
+      transform: true, // Transforma os dados de entrada para os tipos definidos no DTO
     }),
     new ParseIntIdPipe(), // Configura o ParseIntPipe para lançar um erro 400 em caso de falha de conversão
   );
 
   // app.useGlobalFilters(new MyExceptionFilter()); // Configura o filtro de exceção global
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 void bootstrap();

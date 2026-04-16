@@ -1,13 +1,8 @@
-import {
-  ArgumentMetadata,
-  BadRequestException,
-  Injectable,
-  PipeTransform,
-} from '@nestjs/common';
+import * as common from '@nestjs/common';
 
-@Injectable()
-export class ParseIntIdPipe implements PipeTransform<string, number> {
-  transform(value: any, metadata: ArgumentMetadata) {
+@common.Injectable()
+export class ParseIntIdPipe implements common.PipeTransform {
+  transform(value: any, metadata: common.ArgumentMetadata) {
     // console.log('ParseIntIdPipe Executado');
     if (metadata.type !== 'param' || metadata.data !== 'id') {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -17,13 +12,13 @@ export class ParseIntIdPipe implements PipeTransform<string, number> {
     const parsedValue = Number(value);
 
     if (isNaN(parsedValue)) {
-      throw new BadRequestException(
+      throw new common.BadRequestException(
         'ParseIntIdPipe: O valor do ID deve ser um número válido',
       );
     }
 
     if (parsedValue < 0) {
-      throw new BadRequestException(
+      throw new common.BadRequestException(
         'ParseIntIdPipe: O valor do ID deve ser um número positivo maior quer que zero',
       );
     }

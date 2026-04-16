@@ -11,7 +11,7 @@ export class SimpleCacheInterceptor implements NestInterceptor {
   private readonly cache = new Map();
 
   async intercept(context: ExecutionContext, next: CallHandler<any>) {
-    console.log('SimpleCacheInterceptor Executado ANTES'); // Log para depuração, indicando que o interceptor foi executado
+    console.log('SimpleCacheInterceptor Executado ANTES');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const request = context.switchToHttp().getRequest();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -26,9 +26,9 @@ export class SimpleCacheInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap(data => {
-        console.log('Armazenando resposta no cache para URL:', url); // Log para depuração, indicando que a resposta está sendo armazenada no cache para a URL
+        console.log(`Cache da URL: ${url} sendo armazenado`); // Log para depuração, indicando que a resposta está sendo armazenada no cache para a URL
         this.cache.set(url, data); // Armazena a resposta no cache
-        console.log('Resposta armazenada no cache para URL:', url); // Log para depuração, indicando que a resposta foi armazenada no cache para a URL
+        console.log(`URL: ${url} armazenada no cache`); // Log para depuração, indicando que a resposta foi armazenada no cache para a URL
       }),
     );
   }

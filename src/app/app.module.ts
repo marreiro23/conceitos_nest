@@ -1,43 +1,45 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RecadosModule } from 'src/recados/recados.module';
-import { PessoasModule } from 'src/pessoas/pessoas.module';
-import appConfig from './app.config';
-import Joi from '@hapi/joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PessoasModule } from 'src/pessoas/pessoas.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from '@hapi/joi';
+import appConfig from './app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      // envFilePath: ['env/.env'],
+      // ignoreEnvFile: true,
       load: [appConfig],
       validationSchema: Joi.object({
-        DB_TYPE: Joi.required(),
-        DB_HOST: Joi.required(),
-        DB_PORT: Joi.number().default(5432),
-        DB_USERNAME: Joi.required(),
-        DB_PASSWORD: Joi.required(),
-        DB_NAME: Joi.required(),
-        DB_SYNCHRONIZE: Joi.number().min(0).max(1).default(0),
-        DB_AUTO_LOAD_ENTITIES: Joi.number().min(0).max(1).default(0),
+        DATABASE_TYPE: Joi.required(),
+        DATABASE_HOST: Joi.required(),
+        DATABASE_PORT: Joi.number().default(5432),
+        DATABASE_USERNAME: Joi.required(),
+        DATABASE_NAME: Joi.required(),
+        DATABASE_PASSWORD: Joi.required(),
+        DATABASE_AUTOLOADENTITIES: Joi.number().min(0).max(1).default(0),
+        DATABASE_SYNCHRONIZE: Joi.number().min(0).max(1).default(0),
       }),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
+      useFactory: async (configService: ConfigService) => {
         return {
           type: configService.get<'postgres'>('database.type'),
           host: configService.get<string>('database.host'),
           port: configService.get<number>('database.port'),
           username: configService.get<string>('database.username'),
+          database: configService.get<string>('database.name'),
           password: configService.get<string>('database.password'),
-          database: configService.get<string>('database.database'),
-          synchronize: configService.get<boolean>('database.synchronize'),
           autoLoadEntities: configService.get<boolean>(
             'database.autoLoadEntities',
           ),
+          synchronize: configService.get<boolean>('database.synchronize'),
         };
       },
     }),

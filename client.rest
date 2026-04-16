@@ -7,7 +7,7 @@
 
 ### lista todos os recados
 GET {{baseUrl}}/recados/
-?limit=10
+?limit=2
 &offset=0
 Authorization: Bearer 123456
 
@@ -19,9 +19,9 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-"deId": 21,
-"paraId": 20,
-"texto": "deId 21 'Joana' paraIdcxcfd 20'Leo'"
+"deId": 40,
+"paraId": 21,
+"texto": "deId 40 'Joana' paraIdcxcfd 21'Leo'"
   }
 
 ### cria um recado (texto automático no backend)
@@ -29,8 +29,8 @@ POST {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-"texto": "Recado automático",
-"deId": 20,
+"texto": "Criado novo Recado automático",
+"deId": 40,
 "paraId": 21
 }
 
@@ -63,20 +63,20 @@ DELETE {{baseUrl}}/recados/
 
 ### lista todas as pessoas
 GET {{baseUrl}}/pessoas/
-?limit=10
-&offset=10
+?limit=2
+&offset=0
 # &user=luiz
 
 
 ### lista apenas uma pessoa
-GET {{baseUrl}}/pessoas/21
+GET {{baseUrl}}/pessoas/52
 ### cria uma pessoa
 POST {{baseUrl}}/pessoas/
 Content-Type: application/json
 
 {
-  "nome": "Jonsscsdsny Dark",
-  "email": "sd.cswsdark@example.com",
+  "nome": "User 1",
+  "email": "user1@example.com",
   "passwordHash": "1e234wwwx56"
 }
 ### cria uma pessoa (senha automática no backend)
